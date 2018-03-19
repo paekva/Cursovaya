@@ -1,13 +1,16 @@
 package ru.iad;
 
 import ru.iad.dao.Insert;
+import ru.iad.dao.SimpleSearch;
+import ru.iad.entities.Animals;
+import ru.iad.entities.TicketsType;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import java.sql.Date;
+import java.util.List;
 
 @Stateless
 @LocalBean
@@ -15,12 +18,11 @@ import java.sql.Date;
 public class HelloWorld {
 
     @EJB
-    Insert insert;
+    SimpleSearch simpleSearch;
     @GET
     public String sayHello()
     {
-        Date zooDate = new Date(100000);
-        insert.zooInsert("Мордовский национальный парк","работает","Вилкова А.Ю", "Саранск, республика Мордовия", zooDate,300,1202);
-        return "Hello!";
+        TicketsType ticketsType = simpleSearch.searchTicketsTypeByName("Школьный");
+        return ticketsType.getОписаниеКатегории();
     }
 }

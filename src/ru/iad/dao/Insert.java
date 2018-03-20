@@ -64,9 +64,10 @@ public class Insert {
             Places place = new Places();
             place.setНазваниеПлощадки(name);
             place.setIdЗоопарка(idZoo);
-            /*MORE HERE*/
+            place.setIdВидаРастения(idKindOfFlora);
+            place.setIdЖивотного(idAnimal);
             em.getTransaction().begin();
-            em.persist(zoo);
+            em.persist(place);
             em.getTransaction().commit();
         } catch(Exception e)
         {
@@ -101,9 +102,10 @@ public class Insert {
             Activity activity = new Activity();
             activity.setIdЗоопарка(idZoo);
             activity.setКоличествоЧасовВНеделю(hours);
-            /*MORE HERE*/
+            activity.setIdСотрудника(idEmployee);
+            activity.setIdТипаДеятельности(idKindOfActivity);
             em.getTransaction().begin();
-            em.persist(zoo);
+            em.persist(activity);
             em.getTransaction().commit();
         } catch(Exception e)
         {
@@ -154,117 +156,123 @@ public class Insert {
 
     /**
      * Функция вставки записи в таблицу
-     * @see УпоминанияОЗоопаркеEntity
+     * @see Mentions
      */
-    /*
-    public static void MentioningInsert( String name, String kindOfMentioning, String zoo, String animal, String employee, Date date)
+
+    public static void mentionInsert( String name, String kindOfMentioning, String zoo, String animal, String employee, Date date)
     {
         try {
-            ВидыУпоминанийEntity mentioningItem= SimpleSearch.searchKindOfMentionByName(session, kindOfMentioning);
+            MentionType mentioningItem= SimpleSearch.searchMentionTypeByName(kindOfMentioning);
             if(mentioningItem==null) throw new Exception();
             int idKindOfMentioning = mentioningItem.getIdВидаУпоминания();
 
-            List<СотрудникиEntity> employeeItem = SimpleSearch.EmployeeSearchByName(session,employee);
+            List<Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
             int idEmployee = 0;
             if(employeeItem.size()!=0)idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            List <Zoo> zooItem= SimpleSearch.searchZooByName(session,zoo);
+            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
             int idZoo = 0;
-            if(zooItem.size()!=0) idZoo = zooItem.get(0).getIdЗоопарка();
+            if(zooItem != null) idZoo = zooItem.getIdЗоопарка();
 
-            List <ЖивотныеEntity> animalItem = SimpleSearch.searchAnimalByName(session,animal);
+            List <Animals> animalItem = SimpleSearch.searchAnimalByName(animal);
             if(animalItem.size()==0) throw new Exception();
             int idAnimal = animalItem.get(0).getIdЖивотного();
 
-            session.beginTransaction();
-            УпоминанияОЗоопаркеEntity mentioning = new УпоминанияОЗоопаркеEntity();
-            mentioning.setНазваниеУпоминания(name);
-            mentioning.setIdВидаУпоминания(idKindOfMentioning);
-            if(idZoo!=0) mentioning.setIdЗоопарка(idZoo);
-            mentioning.setIdЖивотного(idAnimal);
-            if(idEmployee!=0) mentioning.setIdСотрудника(idEmployee);
-            mentioning.setДатаПубликации(date);
-            session.save(mentioning);
-            session.getTransaction().commit();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Mentions mentions = new Mentions();
+            mentions.setНазваниеУпоминания(name);
+            mentions.setIdВидаУпоминания(idKindOfMentioning);
+            mentions.setIdЖивотного(idAnimal);
+            mentions.setIdЗоопарка(idZoo);
+            mentions.setIdСотрудника(idEmployee);
+            em.getTransaction().begin();
+            em.persist(mentions);
+            em.getTransaction().commit();
+
         } catch(Exception e)
         {
             e.printStackTrace();
         }
     }
-    */
+
 
     /**
      * Функция вставки записи в таблицу
-     * @see МероприятияEntity
+     * @see Events
      */
-    /*
-    public static void EventInsert( String name, String zoo, String kind, String employee, Date date, Double duration, Double cost)
+    public static void eventInsert( String name, String zoo, String kind, String employee, Date date, Double duration, Double cost)
     {
         try {
-            List <СотрудникиEntity> employeeItem = SimpleSearch.EmployeeSearchByName(session,employee);
+            List <Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
             if(employeeItem.size()==0) throw new Exception();
             int idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            List <Zoo> zooItem= SimpleSearch.searchZooByName(session,zoo);
-            if(zooItem.size()==0) throw new Exception();
-            int idZoo = zooItem.get(0).getIdЗоопарка();
+            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            if(zooItem == null) throw new Exception();
+            int idZoo = zooItem.getIdЗоопарка();
 
-            ТипыМероприятийEntity eventItem= SimpleSearch.searchKindOfEventsByName(session,kind);
+            EventType eventItem= SimpleSearch.searchEventTypeByName(kind);
             if(eventItem==null) throw new Exception();
             int idKind = eventItem.getIdТипаМероприятия();
 
-            session.beginTransaction();
-            МероприятияEntity event = new МероприятияEntity();
-            event.setНазвание(name);
-            event.setIdЗоопарка(idZoo);
-            event.setIdТипаМероприятия(idKind);
-            event.setIdСотрудника(idEmployee);
-            event.setДатаВремяМероприятия(date);
-            event.setПродолжительность(duration);
-            event.setСтоимостьБилетов(cost) ;
-            session.save(event);
-            session.getTransaction().commit();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Events events = new Events();
+            events.setНазвание(name);
+            events.setIdЗоопарка(idZoo);
+            events.setIdТипаМероприятия(idKind);
+            events.setIdСотрудника(idEmployee);
+            events.setДатаВремяМероприятия(date);
+            events.setПродолжительность(duration);
+            events.setСтоимостьБилетов(cost);
+            em.getTransaction().begin();
+            em.persist(events);
+            em.getTransaction().commit();
         } catch(Exception e)
         {
             e.printStackTrace();
         }
-    }*/
+    }
+
 
     /**
      * Функция вставки записи в таблицу
-     * @see БилетыEntity
+     * @see Tickets
      */
-    /*
-    public static void TicketInsert( String zoo, String employee, Date date, String category)
+
+    public static void ticketInsert( String zoo, String employee, Date date, String category)
     {
         try {
-            List <СотрудникиEntity> employeeItem = SimpleSearch.EmployeeSearchByName(session,employee);
+            List <Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
             if(employeeItem.size()==0) throw new Exception();
             int idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            List <Zoo> zooItem= SimpleSearch.searchZooByName(session,zoo);
-            if(zooItem.size()==0) throw new Exception();
-            int idZoo = zooItem.get(0).getIdЗоопарка();
+            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            if(zooItem == null) throw new Exception();
+            int idZoo = zooItem.getIdЗоопарка();
 
-            ВидыКатегорийEntity categoryItem = SimpleSearch.searchKindOfCategoryByName(session,category);
+            TicketsType categoryItem = SimpleSearch.searchTicketsTypeByName(category);
             if(categoryItem==null) throw new Exception();
             int idCategory = categoryItem.getIdКатегории();
 
-            session.beginTransaction();
-            БилетыEntity ticket = new БилетыEntity();
-            ticket.setIdЗоопарка(idZoo);
-            ticket.setIdСотрудника(idEmployee);
-            ticket.setДатаПокупки(date);
-            ticket.setIdКатегории(idCategory);
-            session.save(ticket);
-            session.getTransaction().commit();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Tickets tickets = new Tickets();
+            tickets.setIdЗоопарка(idZoo);
+            tickets.setIdКатегории(idCategory);
+            tickets.setIdСотрудника(idEmployee);
+            tickets.setДатаПокупки(date);
+            em.getTransaction().begin();
+            em.persist(tickets);
+            em.getTransaction().commit();
 
         } catch(Exception e)
         {
             e.printStackTrace();
             System.out.println("Incorrect data!");
         }
-    }*/
+    }
 
 
     /**
@@ -292,49 +300,47 @@ public class Insert {
     }
 
 
+
     /**
      * Функция вставки записи в таблицу
-     * @see ЖивотныеEntity
+     * @see Animals
      */
-    /*
-    public static void AnimalInsert( String name, String kind, Date dateOfBirth, String features, String father, String mother, String condition)
+    public static void animalInsert( String name, String kind, Date dateOfBirth, String features, String father, String mother, String condition)
     {
         try {
-            ВидыЖивотныхEntity animalKindItem = SimpleSearch.searchKindOfAnimalByName(session,kind);
+            AnimalType animalKindItem = SimpleSearch.searchAnimalTypeByName(kind);
             if(animalKindItem==null) throw new Exception();
             int idKind = animalKindItem.getIdВида();
 
-            List<ЖивотныеEntity> animalItemF = SimpleSearch.searchAnimalByName(session,father);
+            List<Animals> animalItemF = SimpleSearch.searchAnimalByName(father);
             int idFather=0;
             if(animalItemF.size()!=0) idFather = animalItemF.get(0).getIdЖивотного();
 
-            List<ЖивотныеEntity> animalItemM= SimpleSearch.searchAnimalByName(session,mother);
+            List<Animals> animalItemM= SimpleSearch.searchAnimalByName(mother);
             int idMother=0;
             if(animalItemM.size()!=0) idMother = animalItemM.get(0).getIdЖивотного();
 
-
-            session.beginTransaction();
-            ЖивотныеEntity animal = new ЖивотныеEntity();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Animals animal = new Animals();
             animal.setIdВида(idKind);
-            animal.setИмя(name);
-            animal.setДатаРождения(dateOfBirth);
-            animal.setОсобенности(features);
-
             if(idFather==0) animal.setIdПапы(null);
             else animal.setIdПапы(idFather);
 
             if(idMother==0) animal.setIdПапы(null);
             else animal.setIdПапы(idMother);
-
+            animal.setДатаРождения(dateOfBirth);
+            animal.setОсобенности(features);
+            animal.setИмя(name);
             animal.setСостояние(condition) ;
-            session.save(animal);
-            session.getTransaction().commit();
+            em.getTransaction().begin();
+            em.persist(animal);
+            em.getTransaction().commit();
         } catch(Exception e)
         {
             e.printStackTrace();
         }
     }
-    */
 
 
     /**
@@ -473,19 +479,28 @@ public class Insert {
     /**
      * Добавление нового пользователя
      */
-
-
-    /*
-    public static void UserInsert( String username, String password, String role) throws Exception
+    public static void userInsert( String username, String password, String role)
     {
-            session.beginTransaction();
-            Roles userRole;
-            if(role.equals("admin")) userRole = Roles.ADMIN;
-            else userRole = Roles.USER;
-            User newUser = new User(username, password, userRole);
-            session.save(newUser);
-            session.getTransaction().commit();
+        try {
+            Role userRole;
+            if(role.equals("admin")) userRole = Role.ADMIN;
+            else userRole = Role.USER;
+
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            newUser.setRoles(userRole);
+
+            em.getTransaction().begin();
+            em.persist(newUser);
+            em.getTransaction().commit();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
-    */
 }
 

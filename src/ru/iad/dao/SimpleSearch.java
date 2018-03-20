@@ -499,7 +499,7 @@ public class SimpleSearch {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Query query = em.createQuery("SELECT m from Zoo as m WHERE m.idЗоопарка=:paramName");
+                Query query = em.createQuery("SELECT m from Zoo as m WHERE m.название=:paramName");
                 query.setParameter("paramName", name);
                 return (Zoo)query.getResultList().get(0);
             }
@@ -588,14 +588,24 @@ public class SimpleSearch {
 
     /**
      * Функция поиска пользователя
+     * @see User по имени
      */
-    /*public static List<User> UserSearch(  String username)
+    /*
+    public static List<User> UserSearch(  String username)
     {
-        session.beginTransaction();
-        Query query = session.createQuery("from User where username = :paramName");
-        query.setParameter("paramName", username);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from User as m WHERE m.username=:paramName");
+                query.setParameter("paramName", username);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }*/
 }

@@ -1,6 +1,7 @@
 package ru.iad.entities;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,6 +11,12 @@ public class Tickets {
     private int idБилета;
     private Integer idЗоопарка;
     private Date датаПокупки;
+    private int idСотрудника;
+    private int idКатегории;
+
+    public void setДатаПокупки(Timestamp датаПокупки) {
+        this.датаПокупки = датаПокупки;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,5 +63,25 @@ public class Tickets {
     public int hashCode() {
 
         return Objects.hash(idБилета, idЗоопарка, датаПокупки);
+    }
+
+    @Basic
+    @Column(name = "id_сотрудника", nullable = false)
+    public int getIdСотрудника() {
+        return idСотрудника;
+    }
+
+    public void setIdСотрудника(int idСотрудника) {
+        this.idСотрудника = idСотрудника;
+    }
+
+    @Basic
+    @Column(name = "id_категории", nullable = false)
+    public int getIdКатегории() {
+        return idКатегории;
+    }
+
+    public void setIdКатегории(int idКатегории) {
+        this.idКатегории = idКатегории;
     }
 }

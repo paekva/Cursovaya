@@ -11,6 +11,8 @@ public class Places {
     private int idЗоопарка;
     private String названиеПлощадки;
     private BigInteger площадь;
+    private Integer idВидаРастения;
+    private Integer idЖивотного;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,5 +70,25 @@ public class Places {
     public int hashCode() {
 
         return Objects.hash(номерПлощадки, idЗоопарка, названиеПлощадки, площадь);
+    }
+
+    @Basic
+    @Column(name = "id_вида_растения", nullable = true)
+    public Integer getIdВидаРастения() {
+        return idВидаРастения;
+    }
+
+    public void setIdВидаРастения(Integer idВидаРастения) {
+        this.idВидаРастения = idВидаРастения;
+    }
+
+    @Basic
+    @Column(name = "id_животного", nullable = true)
+    public Integer getIdЖивотного() {
+        return idЖивотного;
+    }
+
+    public void setIdЖивотного(Integer idЖивотного) {
+        this.idЖивотного = idЖивотного;
     }
 }

@@ -21,7 +21,7 @@ public class SimpleSearch {
      * @return Возвращает список животных с таким именем
      */
 
-    public List<Animals> searchAnimalsByName(String name){
+    public static List<Animals> searchAnimalByName(String name){
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
@@ -117,18 +117,18 @@ public class SimpleSearch {
 
     /**
      * Функция поиска записи в таблице
-     * @see Mention по идентификатору
+     * @see Mentions по идентификатору
      * @return Возвращает упоминание с таким id
      */
-    public static Mention searchMentionById(Integer id)
+    public static Mentions searchMentionById(Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Query query = em.createQuery("SELECT m from Mention as m WHERE m.idУпоминания=:paramName");
+                Query query = em.createQuery("SELECT m from Mentions as m WHERE m.idУпоминания=:paramName");
                 query.setParameter("paramName", id);
-                return (Mention) query.getResultList().get(0);
+                return (Mentions) query.getResultList().get(0);
             }
         }
         catch(Exception e)
@@ -141,19 +141,19 @@ public class SimpleSearch {
 
     /**
      * Функция поиска записи в таблице
-     * @see Mention по имени
+     * @see Mentions по имени
      * @return Возвращает упоминание с таким именем
      */
 
-    public static Mention searchMentionByName(String name)
+    public static Mentions searchMentionByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Query query = em.createQuery("SELECT m from Mention as m WHERE m.названиеУпоминания=:paramName");
+                Query query = em.createQuery("SELECT m from Mentions as m WHERE m.названиеУпоминания=:paramName");
                 query.setParameter("paramName", name);
-                return (Mention)query.getResultList().get(0);
+                return (Mentions)query.getResultList().get(0);
             }
         }
         catch(Exception e)
@@ -466,7 +466,7 @@ public class SimpleSearch {
      * @see ActivityType по названию
      * @return Возвращает тип деятельности сотрудников зоопарка, имеющий такое название
      */
-    public static ActivityType searchActivityTypeById(  String name)
+    public static ActivityType searchActivityTypeByName(  String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -486,13 +486,14 @@ public class SimpleSearch {
 
 
 
+
     //________# 7 ________________
     /**
      * Функция поиска записи в таблице
      * @see Zoo по имени
-     * @return Возвращает лист зоопарков, записанных под данным именем
+     * @return Возвращает зоопарк под данным именем
      */
-    public static List<Zoo> searchZooByName(String name)
+    public static Zoo searchZooByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -500,7 +501,7 @@ public class SimpleSearch {
             if (em != null) {
                 Query query = em.createQuery("SELECT m from Zoo as m WHERE m.idЗоопарка=:paramName");
                 query.setParameter("paramName", name);
-                return query.getResultList();
+                return (Zoo)query.getResultList().get(0);
             }
         }
         catch(Exception e)

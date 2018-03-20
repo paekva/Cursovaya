@@ -9,6 +9,8 @@ public class Activity {
     private int idДеятельности;
     private int idЗоопарка;
     private double количествоЧасовВНеделю;
+    private int idТипаДеятельности;
+    private int idСотрудника;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,5 +57,25 @@ public class Activity {
     public int hashCode() {
 
         return Objects.hash(idДеятельности, idЗоопарка, количествоЧасовВНеделю);
+    }
+
+    @Basic
+    @Column(name = "id_типа_деятельности", nullable = false)
+    public int getIdТипаДеятельности() {
+        return idТипаДеятельности;
+    }
+
+    public void setIdТипаДеятельности(int idТипаДеятельности) {
+        this.idТипаДеятельности = idТипаДеятельности;
+    }
+
+    @Basic
+    @Column(name = "id_сотрудника", nullable = false)
+    public int getIdСотрудника() {
+        return idСотрудника;
+    }
+
+    public void setIdСотрудника(int idСотрудника) {
+        this.idСотрудника = idСотрудника;
     }
 }

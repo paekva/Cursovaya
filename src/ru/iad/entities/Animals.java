@@ -12,6 +12,13 @@ public class Animals {
     private Date датаРождения;
     private String особенности;
     private String состояние;
+    private int idВида;
+    private Integer idПапы;
+    private Integer idМамы;
+
+    public void setДатаРождения(java.sql.Date датаРождения) {
+        this.датаРождения = датаРождения;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -80,5 +87,35 @@ public class Animals {
     public int hashCode() {
 
         return Objects.hash(idЖивотного, имя, датаРождения, особенности, состояние);
+    }
+
+    @Basic
+    @Column(name = "id_вида", nullable = false)
+    public int getIdВида() {
+        return idВида;
+    }
+
+    public void setIdВида(int idВида) {
+        this.idВида = idВида;
+    }
+
+    @Basic
+    @Column(name = "id_папы", nullable = true)
+    public Integer getIdПапы() {
+        return idПапы;
+    }
+
+    public void setIdПапы(Integer idПапы) {
+        this.idПапы = idПапы;
+    }
+
+    @Basic
+    @Column(name = "id_мамы", nullable = true)
+    public Integer getIdМамы() {
+        return idМамы;
+    }
+
+    public void setIdМамы(Integer idМамы) {
+        this.idМамы = idМамы;
     }
 }

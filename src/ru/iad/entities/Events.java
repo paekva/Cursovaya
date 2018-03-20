@@ -1,6 +1,7 @@
 package ru.iad.entities;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,6 +14,12 @@ public class Events {
     private Date датаВремяМероприятия;
     private Double продолжительность;
     private Double стоимостьБилетов;
+    private int idТипаМероприятия;
+    private int idСотрудника;
+
+    public void setДатаВремяМероприятия(Timestamp датаВремяМероприятия) {
+        this.датаВремяМероприятия = датаВремяМероприятия;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,5 +99,25 @@ public class Events {
     public int hashCode() {
 
         return Objects.hash(idМероприятия, название, idЗоопарка, датаВремяМероприятия, продолжительность, стоимостьБилетов);
+    }
+
+    @Basic
+    @Column(name = "id_типа_мероприятия", nullable = false)
+    public int getIdТипаМероприятия() {
+        return idТипаМероприятия;
+    }
+
+    public void setIdТипаМероприятия(int idТипаМероприятия) {
+        this.idТипаМероприятия = idТипаМероприятия;
+    }
+
+    @Basic
+    @Column(name = "id_сотрудника", nullable = false)
+    public int getIdСотрудника() {
+        return idСотрудника;
+    }
+
+    public void setIdСотрудника(int idСотрудника) {
+        this.idСотрудника = idСотрудника;
     }
 }

@@ -6,6 +6,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Stateless
 @LocalBean
@@ -41,74 +42,76 @@ public class Insert {
 
     /**
      * Функция вставки записи в таблицу
-     * @see ПлощадкиEntity
+     * @see Places
      */
-/*
-    public static void PlaceInsert( String zoo, String name, String flora, String animal, Integer square)
+    public static void placeInsert( String zoo, String name, String flora, String animal, Integer square)
     {
         try {
-            List<Zoo> zooItem= SimpleSearch.searchZooByName(session,zoo);
-            if(zooItem.size()==0) throw new Exception();
-            int idZoo = zooItem.get(0).getIdЗоопарка();
+            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            if(zooItem==null) throw new Exception();
+            int idZoo = zooItem.getIdЗоопарка();
 
             int idKindOfFlora = 0;
-            List<ФлораEntity> floraItem = SimpleSearch.FloraSearchId(session,flora);
+            List<Flora> floraItem = SimpleSearch.searchFloraByName(flora);
             if(floraItem.size()!=0) idKindOfFlora = floraItem.get(0).getIdВидаРастения();
 
             int idAnimal = 0;
-            List <ЖивотныеEntity> animalItem = SimpleSearch.searchAnimalByName(session,animal);
+            List <Animals> animalItem = SimpleSearch.searchAnimalByName(animal);
             if(animalItem.size()!=0) idAnimal = animalItem.get(0).getIdЖивотного();
 
-            session.beginTransaction();
-            ПлощадкиEntity place = new ПлощадкиEntity();
-            place.setIdЗоопарка(idZoo);
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Places place = new Places();
             place.setНазваниеПлощадки(name);
-            if(idKindOfFlora!=0) place.setIdВидаРастения(idKindOfFlora);
-            if(idAnimal!=0) place.setIdЖивотного(idAnimal);
-            place.setПлощадь(square);
-            session.save(place);
-            session.getTransaction().commit();
+            place.setIdЗоопарка(idZoo);
+            /*MORE HERE*/
+            em.getTransaction().begin();
+            em.persist(zoo);
+            em.getTransaction().commit();
         } catch(Exception e)
         {
             e.printStackTrace();
             System.out.println("Incorrect data!");
         }
-    }*/
+    }
+
 
     /**
      * Функция вставки записи в таблицу
-     * @see ВидДеятельностиEntity
+     * @see Activity
      */
-    /*
-    public static void ActivityInsert( String kindOfActivity, String zoo, String employee, Double hours)
+    public static void activityInsert( String kindOfActivity, String zoo, String employee, Double hours)
     {
         try {
             int idZoo;
-            List <Zoo> zooItem= SimpleSearch.searchZooByName(session,zoo);
-            if(zooItem.size()==0) throw new Exception();
-            else idZoo = zooItem.get(0).getIdЗоопарка();
+            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            if(zooItem==null) throw new Exception();
+            else idZoo = zooItem.getIdЗоопарка();
 
-            List <ТипДеятельностиEntity> activityKindItem = SimpleSearch.KindOfActivitySearchId(session,kindOfActivity);
-            if(activityKindItem.size()==0) throw new Exception();
-            int idKindOfActivity = activityKindItem.get(0).getIdТипаДеятельности();
+            ActivityType activityKindItem = SimpleSearch.searchActivityTypeByName(kindOfActivity);
+            if(activityKindItem==null) throw new Exception();
+            int idKindOfActivity = activityKindItem.getIdТипаДеятельности();
 
-            List <СотрудникиEntity> employeeItem = SimpleSearch.EmployeeSearchByName(session,employee);
+            List <Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
             if(employeeItem.size()==0) throw new Exception();
             int idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            session.beginTransaction();
-            ВидДеятельностиEntity activity = new ВидДеятельностиEntity();
-            activity.setIdТипаДеятельности(idKindOfActivity);
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Activity activity = new Activity();
             activity.setIdЗоопарка(idZoo);
-            activity.setIdСотрудника(idEmployee);
             activity.setКоличествоЧасовВНеделю(hours);
-            session.save(activity);
-            session.getTransaction().commit();
+            /*MORE HERE*/
+            em.getTransaction().begin();
+            em.persist(zoo);
+            em.getTransaction().commit();
         } catch(Exception e)
         {
             e.printStackTrace();
         }
-    }*/
+    }
+
+
 
     /**
      * Функция вставки записи в таблицу
@@ -147,6 +150,7 @@ public class Insert {
             e.printStackTrace();
         }
     }*/
+
 
     /**
      * Функция вставки записи в таблицу

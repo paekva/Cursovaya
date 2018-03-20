@@ -15,6 +15,15 @@ public class AnimalRential {
     private String цель;
     private Double ценаУслуги;
     private Date датаВозврата;
+    private int idЖивотного;
+
+    public void setДатаВзятия(java.sql.Date датаВзятия) {
+        this.датаВзятия = датаВзятия;
+    }
+
+    public void setДатаВозврата(java.sql.Date датаВозврата) {
+        this.датаВозврата = датаВозврата;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -116,5 +125,15 @@ public class AnimalRential {
     public int hashCode() {
 
         return Objects.hash(idПроката, idЗоопаркаДающего, датаВзятия, idЗоопаркаБерущего, фиоБерущего, цель, ценаУслуги, датаВозврата);
+    }
+
+    @Basic
+    @Column(name = "id_животного", nullable = false)
+    public int getIdЖивотного() {
+        return idЖивотного;
+    }
+
+    public void setIdЖивотного(int idЖивотного) {
+        this.idЖивотного = idЖивотного;
     }
 }

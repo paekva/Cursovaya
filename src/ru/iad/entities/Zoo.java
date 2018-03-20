@@ -17,6 +17,10 @@ public class Zoo {
     private String функциональность;
     private Integer штат;
 
+    public void setДатаОснования(Timestamp датаОснования) {
+        this.датаОснования = датаОснования;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_зоопарка", nullable = false)

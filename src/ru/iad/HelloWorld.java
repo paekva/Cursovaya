@@ -3,6 +3,7 @@ package ru.iad;
 import ru.iad.dao.Insert;
 import ru.iad.dao.SimpleSearch;
 import ru.iad.entities.Animals;
+import ru.iad.entities.EventType;
 import ru.iad.entities.TicketsType;
 
 import javax.ejb.EJB;
@@ -22,7 +23,7 @@ public class HelloWorld {
     @GET
     public String sayHello()
     {
-        TicketsType ticketsType = simpleSearch.searchTicketsTypeByName("Школьный");
-        return ticketsType.getОписаниеКатегории();
+        EventType ticketsType = simpleSearch.searchEventTypeByName("Праздник");
+        return Integer.toString(ticketsType.getIdТипаМероприятия());
     }
 }

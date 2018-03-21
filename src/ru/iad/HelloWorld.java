@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import ru.iad.dao.ComplexSearch;
 import ru.iad.dao.Insert;
 import ru.iad.dao.SimpleSearch;
+import ru.iad.dao.Update;
 import ru.iad.entities.Animals;
 import ru.iad.entities.EventType;
 import ru.iad.entities.TicketsType;
+import ru.iad.entities.User;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -31,18 +33,16 @@ public class HelloWorld {
     @EJB
     ComplexSearch complexSearch;
 
+    @EJB
+    Update update;
+
     @GET
     @Produces({"application/xml", "application/json"})
     public String sayHello()
     {
-        List<Animals> list = complexSearch.searchAnimalByType("Млекопитающие");
-        String str="";
-        for(int i=0;i<list.size();i++)
-        {
-            str+=(list.get(i)).getИмя();
-        }
+        update.animalUpdate(5,"пушистый зверек", "живой");
         Gson gson = new Gson();
-        String json = gson.toJson(str);
+        String json = gson.toJson("Still good");
         return json;
     }
 }

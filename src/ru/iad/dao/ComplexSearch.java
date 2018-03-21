@@ -86,97 +86,139 @@ public class ComplexSearch {
     //УПОМИНАНИЯ
     /**
      * Функция поиска записи в таблице
-     * @see УпоминанияОЗоопаркеEntity
+     * @see Mentions
      * по типу упоминаний
-     * @see ВидыУпоминанийEntity
+     * @see MentionType
      * @return Возвращает список всех упоминаний данного типа
-
-    public static List<УпоминанияОЗоопаркеEntity> searchMentionsByType(Session session, String type)
+    **/
+    public static List<Mentions> searchMentionsByType(String type)
     {
-        ВидыУпоминанийEntity result = SimpleSearch.searchKindOfMentionByName(session, type);;
-        int id = result.getIdВидаУпоминания();
-        session.beginTransaction();
-        Query query = session.createQuery("from УпоминанияОЗоопаркеEntity where названиеУпоминания = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                MentionType result = SimpleSearch.searchMentionTypeByName(type);
+                int id = result.getIdВидаУпоминания();
+                Query query = em.createQuery("SELECT m from Mentions as m where m.idВидаУпоминания = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 
     /**
      * Функция поиска записи в таблице
-     * @see УпоминанияОЗоопаркеEntity
+     * @see Mentions
      * по зоопарку
-     * @see ЗоопаркиEntity
+     * @see Zoo
      * @return Возвращает список всех упоминаний, относящихся к данному зоопарку непосредственно
-
-    public static List<УпоминанияОЗоопаркеEntity> searchMentionsByZoo(Session session, String zoo)
+    **/
+    public static List<Mentions> searchMentionsByZoo(String zoo)
     {
-        List<ЗоопаркиEntity> result = SimpleSearch.searchZooByName(session, zoo);;
-        int id = result.get(0).getIdЗоопарка();
-        session.beginTransaction();
-        Query query = session.createQuery("from УпоминанияОЗоопаркеEntity where названиеУпоминания = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Zoo result = SimpleSearch.searchZooByName(zoo);
+                int id = result.getIdЗоопарка();
+                Query query = em.createQuery("SELECT m from Mentions as m where m.idЗоопарка = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * Функция поиска записи в таблице
-     * @see УпоминанияОЗоопаркеEntity
+     * @see Mentions
      * по зоопарку
-     * @see ЗоопаркиEntity
-     * @return Возвращает список всех упоминаний, относящихся к данному зоопарку непосредственно
-
-    public static List<УпоминанияОЗоопаркеEntity> searchMentioningByAnimal(Session session, Integer id)
+     * @see Animals
+     * @return Возвращает список всех упоминаний, относящихся к данному животному непосредственно
+    **/
+    public static List<Animals> searchMentioningByAnimal(String name)
     {
-        session.beginTransaction();
-        Query query = session.createQuery("from УпоминанияОЗоопаркеEntity where idЖивотного = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                List<Animals> result = SimpleSearch.searchAnimalByName(name);
+                int id = result.get(0).getIdЖивотного();
+                Query query = em.createQuery("SELECT m from Mentions as m where m.idЖивотного = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 
     /**
      * Функция поиска записи в таблице
-     * @see УпоминанияОЗоопаркеEntity
+     * @see Mentions
      * по дате
      * @return Возвращает список всех упоминаний до или после заданной даты
-
-    public static List<УпоминанияОЗоопаркеEntity> searchMentionsByDate(Session session, Date date, Boolean before)
+**/
+    public static List<Mentions> searchMentionsByDate(Date date, Boolean before)
     {
-        session.beginTransaction();
-        Query query;
-
-        if(before) query = session.createQuery("from УпоминанияОЗоопаркеEntity where датаПубликации <= :paramName");
-        else query = session.createQuery("from УпоминанияОЗоопаркеEntity where датаПубликации >= :paramName");
-
-        query.setParameter("paramName", date);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query;
+                if(before) query = em.createQuery("SELECT m from Mentions as m where m.датаПубликации <= :paramName");
+                else query = em.createQuery("SELECT m from Mentions as m where m.датаПубликации >= :paramName");
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //СОТРУДНИКИ
     /**
      * Функция поиска записи в таблице
-     * @see УпоминанияОЗоопаркеEntity
-     * по зоопарку
-     * @see ЗоопаркиEntity
+     * @see Activity
+     * по сотруднику
+     * @see Employees
      * @return Возвращает список всех видов деятельности данного сотрудника
-
-    public static List<ВидДеятельностиEntity> EmployeesActivities(Session session, String name)
+**/
+    public static List<Activity> searchEmployeesActivities(String name)
     {
-        List<СотрудникиEntity> result = SimpleSearch.EmployeeSearchByName(session, name);;
-        int id = result.get(0).getIdСотрудника();
-        session.beginTransaction();
-        Query query = session.createQuery("from ВидДеятельностиEntity where idСотрудника = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                List<Employees> result = SimpleSearch.searchEmployeeByName(name);
+                int id = result.get(0).getIdСотрудника();
+
+                Query query = em.createQuery("SELECT m from Activity as m where m.idСотрудника = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //ПРОКАТ
@@ -203,103 +245,138 @@ public class ComplexSearch {
     //МЕРОПРИЯТИЯ
     /**
      * Функция поиска записи в таблице
-     * @see МероприятияEntity
+     * @see Events
      * по типу мероприятий
-     * @see ТипыМероприятийEntity
+     * @see EventType
      * @return Возвращает список всех мероприятий данного типа
-
-    public static List<МероприятияEntity> searchEventByType(Session session, String type)
+**/
+    public static List<Events> searchEventByType(String type)
     {
-        ТипыМероприятийEntity result = SimpleSearch.searchKindOfEventsByName(session, type);
-        int id = result.getIdТипаМероприятия();
-        session.beginTransaction();
-        Query query = session.createQuery("from МероприятияEntity where idТипаМероприятия = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                EventType result = SimpleSearch.searchEventTypeByName(type);
+                int id = result.getIdТипаМероприятия();
+                Query query = em.createQuery("SELECT m from Events as m where m.idТипаМероприятия = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * Функция поиска записи в таблице
-     * @see МероприятияEntity
+     * @see Events
      * по зоопарку
-     * @see ЗоопаркиEntity
+     * @see Zoo
      * @return Возвращает список всех мероприятий данного зоопарка
-
-    public static List<МероприятияEntity> searchEventByZoo(Session session, String zoo)
+**/
+    public static List<Events> searchEventByZoo( String zoo)
     {
-        List<ЗоопаркиEntity> result = SimpleSearch.searchZooByName(session, zoo);
-        int id = result.get(0).getIdЗоопарка();
-        session.beginTransaction();
-        Query query = session.createQuery("from МероприятияEntity where idЗоопарка = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Zoo result = SimpleSearch.searchZooByName( zoo);
+                int id = result.getIdЗоопарка();
+
+                Query query = em.createQuery("SELECT m from Events as m where m.idЗоопарка = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * Функция поиска записи в таблице
-     * @see МероприятияEntity
+     * @see Events
      * по дате
      * @return Возвращает список всех мероприятий до или после заданной даты
-
-    public static List<МероприятияEntity> searchEventByDate(Session session,Date date, Boolean before)
+**/
+    public static List<Events> searchEventByDate(Date date, Boolean before)
     {
-        session.beginTransaction();
-        Query query;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query;
 
-        if(before) query = session.createQuery("from МероприятияEntity where датаВремяМероприятия <= :paramName");
-        else query = session.createQuery("from МероприятияEntity where датаВремяМероприятия >= :paramName");
-
-        query.setParameter("paramName", date);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+                if(before) query = em.createQuery("SELECT m from Events as m where m.датаВремяМероприятия <= :paramName");
+                else query = em.createQuery("SELECT m from Events as m where m.датаВремяМероприятия >= :paramName");
+                query.setParameter("paramName", date);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
     //БИЛЕТЫ
     /**
      * Функция поиска записи в таблице
-     * @see БилетыEntity
+     * @see Tickets
      * по зоопарку
-     * @see ЗоопаркиEntity
+     * @see Zoo
      * @return Возвращает список всех билетов, проданных в данном зоопарке
-
-    public static List<БилетыEntity> searchTicketsByZoo(Session session, String zoo)
+**/
+    public static List<Tickets> searchTicketsByZoo(String zoo)
     {
-        List<ЗоопаркиEntity> result = SimpleSearch.searchZooByName(session, zoo);
-        int id = result.get(0).getIdЗоопарка();
-        session.beginTransaction();
-        Query query = session.createQuery("from БилетыEntity where idЗоопарка = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Zoo result = SimpleSearch.searchZooByName(zoo);
+                int id = result.getIdЗоопарка();
+                Query query = em.createQuery("SELECT m from Tickets as m where m.idЗоопарка = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
     //ПЛОЩАДКИ
     /**
      * Функция поиска записи в таблице
-     * @see ПлощадкиEntity
+     * @see Places
      * по зоопарку
-     * @see ЗоопаркиEntity
+     * @see Zoo
      * @return Возвращает список всех площадок, находящихся в данном зоопарке
-
-    public static List<ПлощадкиEntity> PlaceSearchByZoo(Session session, String zoo)
-    {
-        List<ЗоопаркиEntity> result = SimpleSearch.searchZooByName(session, zoo);
-        int id = result.get(0).getIdЗоопарка();
-        session.beginTransaction();
-        Query query = session.createQuery("from ПлощадкиEntity where idЗоопарка = :paramName");
-        query.setParameter("paramName", id);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+**/
+    public static List<Places> PlaceSearchByZoo(String zoo) {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Zoo result = SimpleSearch.searchZooByName(zoo);
+                int id = result.getIdЗоопарка();
+                Query query = em.createQuery("SELECT m from Places as m where m.idЗоопарка = :paramName");
+                query.setParameter("paramName", id);
+                return query.getResultList();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-}
-*/
 }

@@ -590,8 +590,8 @@ public class SimpleSearch {
      * Функция поиска пользователя
      * @see User по имени
      */
-    /*
-    public static List<User> UserSearch(  String username)
+
+    public static User searchUserByName(String username)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -599,7 +599,7 @@ public class SimpleSearch {
             if (em != null) {
                 Query query = em.createQuery("SELECT m from User as m WHERE m.username=:paramName");
                 query.setParameter("paramName", username);
-                return query.getResultList();
+                return (User)query.getResultList().get(0);
             }
         }
         catch(Exception e)
@@ -607,5 +607,5 @@ public class SimpleSearch {
             e.printStackTrace();
         }
         return null;
-    }*/
+    }
 }

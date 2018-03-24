@@ -76,6 +76,28 @@ public class Insert {
         }
     }
 
+    /**
+     * Функция вставки записи в таблицу
+     * @see News
+     */
+    public static void newsInsert(String header, String content, Date date)
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            News news = new News();
+            news.setHeader(header);
+            news.setContent(content);
+            news.setDate(date);
+            em.getTransaction().begin();
+            em.persist(news);
+            em.getTransaction().commit();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Функция вставки записи в таблицу
@@ -117,41 +139,34 @@ public class Insert {
 
     /**
      * Функция вставки записи в таблицу
-     * @see ПрокатЖивотныхEntity
+     * @see AnimalRential
      */
-    /*
-    public static void RentAnimalInsert( String zooGiving, String animal, Date dateTaken, String zooTaking, String name, String aim, Double cost, Date dateReturn)
+
+    public static void insertAnimalRential(String zooGiving, String animal, Date dateTaken, String zooTaking, String nameOfTaker, String aim, Double cost, Date dateReturn)
     {
         try {
-            List <Zoo> zooItemG= SimpleSearch.searchZooByName(session,zooGiving);
-            if(zooItemG.size()==0) throw new Exception();
-            int idZooGiving = zooItemG.get(0).getIdЗоопарка();
-
-            List <Zoo> zooItemT= SimpleSearch.searchZooByName(session,zooTaking);
-            int idZooTaking = 0;
-            if(zooItemT.size()!=0) idZooTaking = zooItemT.get(0).getIdЗоопарка();
-
-            List <ЖивотныеEntity> animalItem = SimpleSearch.searchAnimalByName(session,animal);
-            if(animalItem.size()==0) throw new Exception();
-            int idAnimal = animalItem.get(0).getIdЖивотного();
-
-            session.beginTransaction();
-            ПрокатЖивотныхEntity rentAnimal = new ПрокатЖивотныхEntity();
-            rentAnimal.setIdЗоопаркаДающего(idZooGiving);
-            rentAnimal.setIdЖивотного(idAnimal);
-            rentAnimal.setДатаВзятия(dateTaken);
-            if(idZooTaking!=0) rentAnimal.setIdЗоопаркаБерущего(idZooTaking);
-            rentAnimal.setФиоБерущего(name);
-            rentAnimal.setЦель(aim);
-            rentAnimal.setЦенаУслуги(cost) ;
-            rentAnimal.setДатаВозврата(dateReturn);
-            session.save(rentAnimal);
-            session.getTransaction().commit();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            Zoo zooG = SimpleSearch.searchZooByName(zooGiving);
+            Zoo zooR = SimpleSearch.searchZooByName(zooTaking);
+            Animals animals = (SimpleSearch.searchAnimalByName(animal)).get(0);
+            AnimalRential ar = new AnimalRential();
+            ar.setДатаВзятия(dateTaken);
+            ar.setДатаВозврата(dateReturn);
+            ar.setIdЖивотного(animals.getIdЖивотного());
+            ar.setIdЗоопаркаБерущего(zooR.getIdЗоопарка());
+            ar.setIdЗоопаркаДающего(zooG.getIdЗоопарка());
+            ar.setЦель(aim);
+            ar.setФиоБерущего(nameOfTaker);
+            ar.setЦенаУслуги(cost);
+            em.getTransaction().begin();
+            em.persist(ar);
+            em.getTransaction().commit();
         } catch(Exception e)
         {
             e.printStackTrace();
         }
-    }*/
+    }
 
 
     /**
@@ -479,7 +494,7 @@ public class Insert {
     /**
      * Добавление нового пользователя
      */
-    public static void userInsert( String username, String password, String role)
+    public static int userInsert( String username, String password, String role)
     {
         try {
             Role userRole;
@@ -497,9 +512,10 @@ public class Insert {
             em.getTransaction().begin();
             em.persist(newUser);
             em.getTransaction().commit();
+            return 0;
         } catch(Exception e)
         {
-            e.printStackTrace();
+            return 1;
         }
     }
 }

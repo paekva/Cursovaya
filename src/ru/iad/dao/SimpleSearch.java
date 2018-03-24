@@ -411,6 +411,28 @@ public class SimpleSearch {
     }
 
 
+    /**
+     * Функция поиска записи в таблице
+     * @see Tickets
+     * @return Возвращает лист зоопарков
+     */
+    public static List<Tickets> searchAllTickets()
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from Tickets as m");
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     //________# 6 ________________
     /**
      * Функция поиска записи в таблице

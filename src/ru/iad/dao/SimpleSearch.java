@@ -539,6 +539,75 @@ public class SimpleSearch {
 
     /**
      * Функция поиска записи в таблице
+     * @see Zoo
+     * @return Возвращает лист зоопарков
+     */
+    public static List<Zoo> searchAllZoo()
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from Zoo as m");
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * Функция поиска записи в таблице
+     * @see News
+     * @return Возвращает лист зоопарков
+     */
+    public static List<News> searchAllNews()
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from News as m");
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * Функция поиска записи в таблице
+     * @see News по id
+     * @return Возвращает лист зоопарков, записанных под данным id
+     */
+    public static News searchNewsyId(  Integer id)
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from News as m WHERE m.id=:paramName");
+                query.setParameter("paramName", id);
+                return (News)query.getResultList().get(0);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Функция поиска записи в таблице
      * @see Flora по имени
      * @return Возвращает лист растений, записанных под данным именем
      */

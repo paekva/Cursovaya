@@ -8,7 +8,10 @@ import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.iad.dao.ComplexSearch;
+import ru.iad.dao.Insert;
 import ru.iad.dao.SimpleSearch;
+import ru.iad.entities.Employees;
 import ru.iad.entities.Tickets;
 import ru.iad.entities.TicketsType;
 import ru.iad.entities.Zoo;
@@ -22,22 +25,9 @@ public class GetInfoService {
     SimpleSearch simpleSearch;
 
     @GET
-    @Path("/employees/{zooId}")
+    @Path("/tickets")
     @Produces({"application/xml", "application/json"})
-    public String allEmployees(@PathParam("zooId") Integer id) {
-
-        Gson gson = new Gson();
-        List<ResponseEmployee> ResponseEmployee = new ArrayList<ResponseEmployee>();
-
-        String json = gson.toJson(ResponseEmployee);
-        return json;
-    }
-
-    @GET
-    @Path("/tickets/{zooId}/{typeId}")
-    @Produces({"application/xml", "application/json"})
-    public String allTickets(@PathParam("zooId") Integer zooId,@PathParam("typeId") Integer typeId ) {
-
+    public String allTickets() {
         Gson gson = new Gson();
         List<ResponseTickets> responseTickets = new ArrayList<>();
         List<Tickets> ticketsList = simpleSearch.searchAllTickets();

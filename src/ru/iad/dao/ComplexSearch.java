@@ -2,6 +2,7 @@ package ru.iad.dao;
 
 import ru.iad.entities.*;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,6 +14,9 @@ import java.util.List;
 
 @Stateless
 public class ComplexSearch {
+
+    @EJB
+    SimpleSearch ss;
 
     //ANIMALS
     /**
@@ -212,6 +216,39 @@ public class ComplexSearch {
                 Query query = em.createQuery("SELECT m from Activity as m where m.idСотрудника = :paramName");
                 query.setParameter("paramName", id);
                 return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Функция поиска записи в таблице
+     * @see Employees
+     * по идентефикатору
+     * @see Zoo
+     * @return Возвращает список всех сотрудников данного зоопарка
+     **/
+    public static List<Employees> searchEmployeesByZoo(Integer zooId)
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from Activity as m where m.idЗоопарка = :paramName");
+                query.setParameter("paramName", zooId);
+                List<Activity> activities = query.getResultList();
+                List<Employees> employees=new ArrayList<>();
+                for(int k=0;k<activities.size();k++)
+                {
+                    Integer id = activities.get(k).getIdСотрудника();
+                    Employees emp = SimpleSearch.searchEmployeeById(id);
+                    employees.add(emp);
+                }
+                return employees;
             }
         }
         catch(Exception e)

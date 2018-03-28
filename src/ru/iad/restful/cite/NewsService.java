@@ -1,5 +1,5 @@
 package ru.iad.restful.cite;
-
+/*READY*/
 import com.google.gson.Gson;
 import ru.iad.dao.SimpleSearch;
 import ru.iad.entities.News;

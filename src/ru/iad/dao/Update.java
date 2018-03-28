@@ -275,7 +275,9 @@ public class Update {
                 query.setParameter("name", name);
                 query.setParameter("email", email);
                 query.setParameter("info", info);
+                em.getTransaction().begin();
                 int result = query.executeUpdate();
+                em.getTransaction().commit();
                 if(result>0) return true;
                 return false;
             }

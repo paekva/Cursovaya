@@ -688,9 +688,13 @@ public class SimpleSearch {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
+                em.getTransaction().begin();
+                System.out.println(username);
                 Query query = em.createQuery("SELECT m from User as m WHERE m.username=:paramName");
                 query.setParameter("paramName", username);
-                return (User)query.getResultList().get(0);
+                User usr=(User)query.getSingleResult();
+                em.getTransaction().commit();
+                return usr;
             }
         }
         catch(Exception e)

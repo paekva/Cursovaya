@@ -9,13 +9,12 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private Role roles;
     private String name;
     private String email;
     private String info;
+    private String role;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -43,16 +42,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Basic
-    @Column(name = "roles", nullable = false)
-    public Role getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Role roles) {
-        this.roles = roles;
     }
 
     @Basic
@@ -85,6 +74,16 @@ public class User {
         this.info = info;
     }
 
+    @Basic
+    @Column(name = "role", nullable = true, length = 5)
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,15 +92,15 @@ public class User {
         return id == user.id &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
-                roles == user.roles &&
                 Objects.equals(name, user.name) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(info, user.info);
+                Objects.equals(info, user.info) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, username, password, roles, name, email, info);
+        return Objects.hash(id, username, password, name, email, info, role);
     }
 }

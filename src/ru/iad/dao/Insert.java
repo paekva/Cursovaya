@@ -497,9 +497,9 @@ public class Insert {
     public static int userInsert( String username, String password, String role)
     {
         try {
-            Role userRole;
-            if(role.equals("admin")) userRole = Role.ADMIN;
-            else userRole = Role.USER;
+            String userRole;
+            if(role.equals("admin")) userRole = "ADMIN";
+            else userRole = "USER";
 
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
@@ -507,7 +507,10 @@ public class Insert {
             User newUser = new User();
             newUser.setUsername(username);
             newUser.setPassword(password);
-            newUser.setRoles(userRole);
+            newUser.setRole(userRole);
+            newUser.setInfo("");
+            newUser.setEmail("");
+            newUser.setName("");
 
             em.getTransaction().begin();
             em.persist(newUser);

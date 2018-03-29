@@ -12,7 +12,7 @@ import java.util.Date;
 public class AddInfoService {
 
     @EJB
-    Insert insert;
+    private Insert insert;
 
     @POST
     @Path("/news")

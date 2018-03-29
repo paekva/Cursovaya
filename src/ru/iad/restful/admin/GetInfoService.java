@@ -1,20 +1,12 @@
 package ru.iad.restful.admin;
-
+/*READY, NOT TESTED*/
 import com.google.gson.Gson;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import javax.ejb.*;
 import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.iad.dao.ComplexSearch;
-import ru.iad.dao.Insert;
 import ru.iad.dao.SimpleSearch;
-import ru.iad.entities.Employees;
-import ru.iad.entities.Tickets;
-import ru.iad.entities.TicketsType;
-import ru.iad.entities.Zoo;
+import ru.iad.entities.*;
 import ru.iad.response.*;
 
 @Path("/admin/get")
@@ -22,7 +14,7 @@ import ru.iad.response.*;
 public class GetInfoService {
 
     @EJB
-    SimpleSearch simpleSearch;
+    private SimpleSearch simpleSearch;
 
     @GET
     @Path("/tickets")
@@ -31,15 +23,15 @@ public class GetInfoService {
         Gson gson = new Gson();
         List<ResponseTickets> responseTickets = new ArrayList<>();
         List<Tickets> ticketsList = simpleSearch.searchAllTickets();
-        for(int i =0;i<ticketsList.size();i++)
-        {
-            Zoo zoo = simpleSearch.searchZooById(ticketsList.get(i).getIdЗоопарка());
-            TicketsType tt = simpleSearch.searchTicketsTypeById(ticketsList.get(i).getIdКатегории());
-            ResponseTickets ticket = new ResponseTickets(ticketsList.get(i).getIdБилета(), zoo.getНазвание(),ticketsList.get(i).getДатаПокупки(),tt.getНазваниеКатегории());
+
+        for (Tickets t:ticketsList) {
+            Zoo zoo = simpleSearch.searchZooById(t.getIdЗоопарка());
+            TicketsType tt = simpleSearch.searchTicketsTypeById(t.getIdКатегории());
+            ResponseTickets ticket = new ResponseTickets(zoo.getНазвание(),t.getДатаПокупки(),tt.getНазваниеКатегории());
             responseTickets.add(ticket);
         }
-        String json = gson.toJson(responseTickets);
-        return json;
+
+        return gson.toJson(responseTickets);
     }
 }
 

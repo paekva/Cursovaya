@@ -2,21 +2,15 @@ package ru.iad.dao;
 
 import ru.iad.entities.*;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.ejb.*;
+import javax.persistence.*;
+import java.util.*;
 
 @Stateless
 public class ComplexSearch {
 
     @EJB
-    SimpleSearch ss;
+    private SimpleSearch ss;
 
     //ANIMALS
     /**
@@ -26,13 +20,13 @@ public class ComplexSearch {
      * @see AnimalType
      * @return Возвращает список животных данного вида
     **/
-    public static List<Animals> searchAnimalByType(String type)
+    public List<Animals> searchAnimalByType(String type)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                AnimalType result = SimpleSearch.searchAnimalTypeByName(type);
+                AnimalType result = ss.searchAnimalTypeByName(type);
                 int id = result.getIdВида();
                 Query query = em.createQuery("SELECT m from Animals as m where m.idВида = :paramName");
                 query.setParameter("paramName", id);
@@ -53,9 +47,9 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех животных данного зоопарка
     **/
-    public static List<Animals> searchAnimalByZoo(String zoo)
+    public List<Animals> searchAnimalByZoo(String zoo)
     {
-        Zoo result = SimpleSearch.searchZooByName(zoo);
+        Zoo result = ss.searchZooByName(zoo);
         int id = result.getIdЗоопарка();
         List list=new ArrayList();
         try {
@@ -79,7 +73,7 @@ public class ComplexSearch {
         {
             item = (Places) list.get(i);
             System.out.println(item.getНазваниеПлощадки());
-            animal = SimpleSearch.searchAnimalById(item.getIdЖивотного());
+            animal = ss.searchAnimalById(item.getIdЖивотного());
             System.out.println("3 " + i);
             resultList.add(i,animal);
         }
@@ -95,13 +89,13 @@ public class ComplexSearch {
      * @see MentionType
      * @return Возвращает список всех упоминаний данного типа
     **/
-    public static List<Mentions> searchMentionsByType(String type)
+    public List<Mentions> searchMentionsByType(String type)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                MentionType result = SimpleSearch.searchMentionTypeByName(type);
+                MentionType result = ss.searchMentionTypeByName(type);
                 int id = result.getIdВидаУпоминания();
                 Query query = em.createQuery("SELECT m from Mentions as m where m.idВидаУпоминания = :paramName");
                 query.setParameter("paramName", id);
@@ -123,13 +117,13 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех упоминаний, относящихся к данному зоопарку непосредственно
     **/
-    public static List<Mentions> searchMentionsByZoo(String zoo)
+    public List<Mentions> searchMentionsByZoo(String zoo)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Zoo result = SimpleSearch.searchZooByName(zoo);
+                Zoo result = ss.searchZooByName(zoo);
                 int id = result.getIdЗоопарка();
                 Query query = em.createQuery("SELECT m from Mentions as m where m.idЗоопарка = :paramName");
                 query.setParameter("paramName", id);
@@ -150,13 +144,13 @@ public class ComplexSearch {
      * @see Animals
      * @return Возвращает список всех упоминаний, относящихся к данному животному непосредственно
     **/
-    public static List<Animals> searchMentioningByAnimal(String name)
+    public List<Animals> searchMentioningByAnimal(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                List<Animals> result = SimpleSearch.searchAnimalByName(name);
+                List<Animals> result = ss.searchAnimalByName(name);
                 int id = result.get(0).getIdЖивотного();
                 Query query = em.createQuery("SELECT m from Mentions as m where m.idЖивотного = :paramName");
                 query.setParameter("paramName", id);
@@ -177,7 +171,7 @@ public class ComplexSearch {
      * по дате
      * @return Возвращает список всех упоминаний до или после заданной даты
 **/
-    public static List<Mentions> searchMentionsByDate(Date date, Boolean before)
+    public List<Mentions> searchMentionsByDate(Date date, Boolean before)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -204,13 +198,13 @@ public class ComplexSearch {
      * @see Employees
      * @return Возвращает список всех видов деятельности данного сотрудника
 **/
-    public static List<Activity> searchEmployeesActivities(String name)
+    public List<Activity> searchEmployeesActivities(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                List<Employees> result = SimpleSearch.searchEmployeeByName(name);
+                List<Employees> result = ss.searchEmployeeByName(name);
                 int id = result.get(0).getIdСотрудника();
 
                 Query query = em.createQuery("SELECT m from Activity as m where m.idСотрудника = :paramName");
@@ -232,7 +226,7 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех сотрудников данного зоопарка
      **/
-    public static List<Employees> searchEmployeesByZoo(Integer zooId)
+    public List<Employees> searchEmployeesByZoo(Integer zooId)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -245,7 +239,7 @@ public class ComplexSearch {
                 for(int k=0;k<activities.size();k++)
                 {
                     Integer id = activities.get(k).getIdСотрудника();
-                    Employees emp = SimpleSearch.searchEmployeeById(id);
+                    Employees emp = ss.searchEmployeeById(id);
                     employees.add(emp);
                 }
                 return employees;
@@ -261,22 +255,30 @@ public class ComplexSearch {
     //ПРОКАТ
     /**
      * Функция поиска записи в таблице
-     * @see ПрокатЖивотныхEntity
-     * по дате
+     * @see AnimalRential
+     *  по дате
      * @return Возвращает список всех событий взятия на прокат до или после заданной даты
-
-    public static List<ПрокатЖивотныхEntity> AnimalRentialSearchByDate(Session session, Date date, Boolean before)
+**/
+    public List<AnimalRential> searchAnimalRentialByDate(Date date, Boolean before)
     {
-        session.beginTransaction();
-        Query query;
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query;
 
-        if(before) query = session.createQuery("from ПрокатЖивотныхEntity where датаВзятия <= :paramName");
-        else query = session.createQuery("from ПрокатЖивотныхEntity where датаВзятия >= :paramName");
+                if(before) query = em.createQuery("SELECT m from AnimalRential as m where m.датаВзятия <= :paramName");
+                else query = em.createQuery("SELECT m from AnimalRential as m where m.датаВзятия >= :paramName");
 
-        query.setParameter("paramName", date);
-        List list = query.list();
-        session.getTransaction().commit();
-        return list;
+                query.setParameter("paramName", date);
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //МЕРОПРИЯТИЯ
@@ -287,13 +289,13 @@ public class ComplexSearch {
      * @see EventType
      * @return Возвращает список всех мероприятий данного типа
 **/
-    public static List<Events> searchEventByType(String type)
+    public List<Events> searchEventByType(String type)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                EventType result = SimpleSearch.searchEventTypeByName(type);
+                EventType result = ss.searchEventTypeByName(type);
                 int id = result.getIdТипаМероприятия();
                 Query query = em.createQuery("SELECT m from Events as m where m.idТипаМероприятия = :paramName");
                 query.setParameter("paramName", id);
@@ -314,13 +316,13 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех мероприятий данного зоопарка
 **/
-    public static List<Events> searchEventByZoo( String zoo)
+    public List<Events> searchEventByZoo( String zoo)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Zoo result = SimpleSearch.searchZooByName( zoo);
+                Zoo result = ss.searchZooByName( zoo);
                 int id = result.getIdЗоопарка();
 
                 Query query = em.createQuery("SELECT m from Events as m where m.idЗоопарка = :paramName");
@@ -341,7 +343,7 @@ public class ComplexSearch {
      * по дате
      * @return Возвращает список всех мероприятий до или после заданной даты
 **/
-    public static List<Events> searchEventByDate(Date date, Boolean before)
+    public List<Events> searchEventByDate(Date date, Boolean before)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -371,13 +373,13 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех билетов, проданных в данном зоопарке
 **/
-    public static List<Tickets> searchTicketsByZoo(String zoo)
+    public List<Tickets> searchTicketsByZoo(String zoo)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Zoo result = SimpleSearch.searchZooByName(zoo);
+                Zoo result = ss.searchZooByName(zoo);
                 int id = result.getIdЗоопарка();
                 Query query = em.createQuery("SELECT m from Tickets as m where m.idЗоопарка = :paramName");
                 query.setParameter("paramName", id);
@@ -400,12 +402,12 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех площадок, находящихся в данном зоопарке
 **/
-    public static List<Places> PlaceSearchByZoo(String zoo) {
+    public List<Places> PlaceSearchByZoo(String zoo) {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Zoo result = SimpleSearch.searchZooByName(zoo);
+                Zoo result = ss.searchZooByName(zoo);
                 int id = result.getIdЗоопарка();
                 Query query = em.createQuery("SELECT m from Places as m where m.idЗоопарка = :paramName");
                 query.setParameter("paramName", id);

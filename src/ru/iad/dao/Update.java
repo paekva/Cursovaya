@@ -14,7 +14,7 @@ public class Update {
      * полей Особенности и состояние
      * @return Возвращает логический тип успешно совершенной операции
     **/
-    public static boolean animalUpdate(Integer id, String features, String state)
+    public boolean animalUpdate(Integer id, String features, String state)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -45,7 +45,7 @@ public class Update {
      * полей Директор и функционирование
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean zooUpdate(String name, String director, String functional)
+    public boolean zooUpdate(String name, String director, String functional)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -73,7 +73,7 @@ public class Update {
      * поля площадь вольера
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean placeUpdate(String name, Integer square) {
+    public boolean placeUpdate(String name, Integer square) {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
@@ -99,7 +99,7 @@ public class Update {
      * поля особенности
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean floraUpdate(String name, String features)
+    public boolean floraUpdate(String name, String features)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -127,7 +127,7 @@ public class Update {
      * поля опыт работы
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean employeeUpdate(String name, Double workExperience)
+    public boolean employeeUpdate(String name, Double workExperience)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -155,7 +155,7 @@ public class Update {
      * поля стоимость
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean ticketTypeUpdate(String name, Double cost)
+    public boolean ticketTypeUpdate(String name, Double cost)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -183,7 +183,7 @@ public class Update {
      * поля описание
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean activityTypeUpdate(String name, String description)
+    public boolean activityTypeUpdate(String name, String description)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -211,7 +211,7 @@ public class Update {
      * поля описание
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean mentionTypeUpdate(String nameNew, String nameOld)
+    public boolean mentionTypeUpdate(String nameNew, String nameOld)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -239,7 +239,7 @@ public class Update {
      * поля число часов работы
      * @return Возвращает логический тип успешно совершенной операции
 **/
-    public static boolean activityUpdate(Double count)
+    public boolean activityUpdate(Double count)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -263,7 +263,7 @@ public class Update {
     /**
      * Функция обновления информации о пользователе
 **/
-    public static boolean userInfoUpdate(String username, String name, String email, String info)
+    public boolean userInfoUpdate(String username, String name, String email, String info)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");

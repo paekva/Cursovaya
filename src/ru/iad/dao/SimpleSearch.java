@@ -21,7 +21,7 @@ public class SimpleSearch {
      * @return Возвращает список животных с таким именем
      */
 
-    public static List<Animals> searchAnimalByName(String name){
+    public List<Animals> searchAnimalByName(String name){
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
@@ -44,7 +44,7 @@ public class SimpleSearch {
      * @see Animals по id
      * @return Возвращает животное с таким идентификатором
      */
-    public static Animals searchAnimalById(  int id)
+    public Animals searchAnimalById(  int id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -68,7 +68,7 @@ public class SimpleSearch {
      * @see AnimalType по имени
      * @return Возвращает тип животных, имеющий такое имя
      */
-    public static AnimalType searchAnimalTypeByName(String name)
+    public AnimalType searchAnimalTypeByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -93,7 +93,7 @@ public class SimpleSearch {
      * @see AnimalType по идентификатору
      * @return Возвращает тип животных, имеющий такое id
      */
-    public static AnimalType searchAnimalTypeById(int id)
+    public AnimalType searchAnimalTypeById(int id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -120,7 +120,7 @@ public class SimpleSearch {
      * @see Mentions по идентификатору
      * @return Возвращает упоминание с таким id
      */
-    public static Mentions searchMentionById(Integer id)
+    public Mentions searchMentionById(Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -145,7 +145,7 @@ public class SimpleSearch {
      * @return Возвращает упоминание с таким именем
      */
 
-    public static Mentions searchMentionByName(String name)
+    public Mentions searchMentionByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -169,7 +169,7 @@ public class SimpleSearch {
      * @see MentionType по имени
      * @return Возвращает тип упоминания, имеющий такое имя
      */
-    public static MentionType searchMentionTypeByName(String name)
+    public MentionType searchMentionTypeByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -193,7 +193,7 @@ public class SimpleSearch {
      * @see MentionType по идентификатору
      * @return Возвращает тип упоминания, имеющий такое id
      */
-    public static MentionType searchMentionTypeById(Integer id)
+    public MentionType searchMentionTypeById(Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -218,7 +218,7 @@ public class SimpleSearch {
      * @see Events по идентефикатору
      * @return Возвращает мероприятие с данным id
      */
-    public static Events searchEventById(Integer id)
+    public Events searchEventById(Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -242,7 +242,7 @@ public class SimpleSearch {
      * @see Events по имени
      * @return Возвращает лист мероприятий, записанных под данным именем
      */
-    public static List<Events> searchEventByName(  String name)
+    public List<Events> searchEventByName(  String name)
     {
         try {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -266,7 +266,7 @@ public class SimpleSearch {
      * @see EventType по идентефикатору
      * @return Возвращает тип мероприятия, имеющий такой id
      */
-    public static EventType searchEventTypeById(  Integer id)
+    public EventType searchEventTypeById(  Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -290,7 +290,7 @@ public class SimpleSearch {
      * @see EventType по названию
      * @return Возвращает тип мероприятия, имеющий такое название
      */
-    public static EventType searchEventTypeByName(  String name)
+    public EventType searchEventTypeByName(  String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -317,7 +317,7 @@ public class SimpleSearch {
      * по дате
      * @return Возвращает список всех билетов, купленных до или после заданной даты
      */
-    public static List<Tickets> searchTicketsByDate(Date date, Boolean before)
+    public List<Tickets> searchTicketsByDate(Date date, Boolean before)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -344,14 +344,14 @@ public class SimpleSearch {
      * по дате
      * @return Возвращает список всех билетов, купленных данным пользователем
      */
-    /*public static List<Tickets> searchTicketsByUser( Integer id)
+    public List<Tickets> searchTicketsByUser( Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Query query = em.createQuery("SELECT m from Tickets as m WHERE m.=:paramName");
-                query.setParameter("paramName", name);
+                Query query = em.createQuery("SELECT m from Tickets as m WHERE m.idСотрудника=:paramName");
+                query.setParameter("paramName", id);
                 return query.getResultList();
             }
         }
@@ -360,7 +360,7 @@ public class SimpleSearch {
             e.printStackTrace();
         }
         return null;
-    }*/
+    }
 
 
     /**
@@ -368,7 +368,7 @@ public class SimpleSearch {
      * @see TicketsType по названию
      * @return Возвращает тип категории билета, имеющий такое название
      */
-    public static TicketsType searchTicketsTypeByName(String name)
+    public TicketsType searchTicketsTypeByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -392,7 +392,7 @@ public class SimpleSearch {
      * @see TicketsType по id
      * @return Возвращает тип категории билета, имеющий такое id
      */
-    public static TicketsType searchTicketsTypeById(  Integer id)
+    public TicketsType searchTicketsTypeById(  Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -416,7 +416,7 @@ public class SimpleSearch {
      * @see Tickets
      * @return Возвращает лист зоопарков
      */
-    public static List<Tickets> searchAllTickets()
+    public List<Tickets> searchAllTickets()
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -439,7 +439,7 @@ public class SimpleSearch {
      * @see Employees по имени
      * @return Возвращает лист сотрудников, записанных под данным именем
      */
-    public static List<Employees> searchEmployeeByName(  String name)
+    public List<Employees> searchEmployeeByName(  String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -463,7 +463,7 @@ public class SimpleSearch {
      * @see Employees по имени
      * @return Возвращает сотрудника с данным идентефикатором
      */
-    public static Employees searchEmployeeById(  Integer id)
+    public Employees searchEmployeeById(  Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -488,7 +488,7 @@ public class SimpleSearch {
      * @see ActivityType по названию
      * @return Возвращает тип деятельности сотрудников зоопарка, имеющий такое название
      */
-    public static ActivityType searchActivityTypeByName(  String name)
+    public ActivityType searchActivityTypeByName(  String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -515,7 +515,7 @@ public class SimpleSearch {
      * @see Zoo по имени
      * @return Возвращает зоопарк под данным именем
      */
-    public static Zoo searchZooByName(String name)
+    public Zoo searchZooByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -540,7 +540,7 @@ public class SimpleSearch {
      * @see Zoo по id
      * @return Возвращает лист зоопарков, записанных под данным id
      */
-    public static Zoo searchZooById(  Integer id)
+    public Zoo searchZooById(  Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -564,7 +564,7 @@ public class SimpleSearch {
      * @see Zoo
      * @return Возвращает лист зоопарков
      */
-    public static List<Zoo> searchAllZoo()
+    public List<Zoo> searchAllZoo()
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -587,7 +587,7 @@ public class SimpleSearch {
      * @see News
      * @return Возвращает лист зоопарков
      */
-    public static List<News> searchAllNews()
+    public List<News> searchAllNews()
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -610,7 +610,7 @@ public class SimpleSearch {
      * @see News по id
      * @return Возвращает лист зоопарков, записанных под данным id
      */
-    public static News searchNewsyId(  Integer id)
+    public News searchNewsyId(  Integer id)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -633,7 +633,7 @@ public class SimpleSearch {
      * @see Flora по имени
      * @return Возвращает лист растений, записанных под данным именем
      */
-    public static List<Flora> searchFloraByName(String name)
+    public List<Flora> searchFloraByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -658,7 +658,7 @@ public class SimpleSearch {
      * @see Places по имени
      * @return Возвращает лист площадок, записанных под данным именем
      */
-    public static List<Places> searchPlaceById(String name)
+    public List<Places> searchPlaceById(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -682,16 +682,41 @@ public class SimpleSearch {
      * @see User по имени
      */
 
-    public static User searchUserByName(String username)
+    public User searchUserByName(String username)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
                 em.getTransaction().begin();
-                System.out.println(username);
                 Query query = em.createQuery("SELECT m from User as m WHERE m.username=:paramName");
                 query.setParameter("paramName", username);
+                User usr=(User)query.getSingleResult();
+                em.getTransaction().commit();
+                return usr;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Функция поиска пользователя
+     * @see User по имени
+     */
+
+    public User searchUserById(Integer id)
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                em.getTransaction().begin();
+                Query query = em.createQuery("SELECT m from User as m WHERE m.id=:paramName");
+                query.setParameter("paramName", id);
                 User usr=(User)query.getSingleResult();
                 em.getTransaction().commit();
                 return usr;

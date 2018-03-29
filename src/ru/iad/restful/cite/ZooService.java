@@ -6,14 +6,9 @@ import ru.iad.dao.SimpleSearch;
 import ru.iad.entities.Zoo;
 import ru.iad.response.ResponseZoo;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import java.util.ArrayList;
-import java.util.List;
+import javax.ejb.*;
+import javax.ws.rs.*;
+import java.util.*;
 
 
 @Path("/zoo")
@@ -21,7 +16,7 @@ import java.util.List;
 public class ZooService {
 
     @EJB
-    SimpleSearch simpleSearch;
+    private SimpleSearch simpleSearch;
 
     @GET
     @Path("/all")
@@ -30,13 +25,12 @@ public class ZooService {
         Gson gson = new Gson();
         List<ResponseZoo> ResponseZoo = new ArrayList<ResponseZoo>();
         List<Zoo> zooList = simpleSearch.searchAllZoo();
-        for(int i =0;i<zooList.size();i++)
-        {
-            ResponseZoo zoo = new ResponseZoo(zooList.get(i).getIdЗоопарка(),zooList.get(i).getНазвание(),zooList.get(i).getМестоположение());
+        for (Zoo z:zooList) {
+            ResponseZoo zoo = new ResponseZoo(z.getIdЗоопарка(),z.getНазвание(),z.getМестоположение());
             ResponseZoo.add(zoo);
         }
-        String json = gson.toJson(ResponseZoo);
-        return json;
+
+        return gson.toJson(ResponseZoo);
     }
 
     @GET
@@ -45,8 +39,7 @@ public class ZooService {
     {
         Zoo zoo = simpleSearch.searchZooById(id);
         Gson gson = new Gson();
-        String json = gson.toJson(zoo);
-        return json;
+        return gson.toJson(zoo);
     }
 }
 

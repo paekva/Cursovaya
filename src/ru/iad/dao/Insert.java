@@ -2,6 +2,7 @@ package ru.iad.dao;
 
 import ru.iad.entities.*;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -12,6 +13,8 @@ import java.util.List;
 @LocalBean
 public class Insert {
 
+    @EJB
+    private SimpleSearch ss;
     //Зоопарки
 
     /**
@@ -44,19 +47,19 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see Places
      */
-    public static void placeInsert( String zoo, String name, String flora, String animal, Integer square)
+    public void placeInsert( String zoo, String name, String flora, String animal, Integer square)
     {
         try {
-            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            Zoo zooItem= ss.searchZooByName(zoo);
             if(zooItem==null) throw new Exception();
             int idZoo = zooItem.getIdЗоопарка();
 
             int idKindOfFlora = 0;
-            List<Flora> floraItem = SimpleSearch.searchFloraByName(flora);
+            List<Flora> floraItem = ss.searchFloraByName(flora);
             if(floraItem.size()!=0) idKindOfFlora = floraItem.get(0).getIdВидаРастения();
 
             int idAnimal = 0;
-            List <Animals> animalItem = SimpleSearch.searchAnimalByName(animal);
+            List <Animals> animalItem = ss.searchAnimalByName(animal);
             if(animalItem.size()!=0) idAnimal = animalItem.get(0).getIdЖивотного();
 
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -80,7 +83,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see News
      */
-    public static void newsInsert(String header, String content, Date date)
+    public void newsInsert(String header, String content, Date date)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -103,19 +106,19 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see Activity
      */
-    public static void activityInsert( String kindOfActivity, String zoo, String employee, Double hours)
+    public void activityInsert( String kindOfActivity, String zoo, String employee, Double hours)
     {
         try {
             int idZoo;
-            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            Zoo zooItem= ss.searchZooByName(zoo);
             if(zooItem==null) throw new Exception();
             else idZoo = zooItem.getIdЗоопарка();
 
-            ActivityType activityKindItem = SimpleSearch.searchActivityTypeByName(kindOfActivity);
+            ActivityType activityKindItem = ss.searchActivityTypeByName(kindOfActivity);
             if(activityKindItem==null) throw new Exception();
             int idKindOfActivity = activityKindItem.getIdТипаДеятельности();
 
-            List <Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
+            List <Employees> employeeItem = ss.searchEmployeeByName(employee);
             if(employeeItem.size()==0) throw new Exception();
             int idEmployee = employeeItem.get(0).getIdСотрудника();
 
@@ -142,14 +145,14 @@ public class Insert {
      * @see AnimalRential
      */
 
-    public static void insertAnimalRential(String zooGiving, String animal, Date dateTaken, String zooTaking, String nameOfTaker, String aim, Double cost, Date dateReturn)
+    public void insertAnimalRential(String zooGiving, String animal, Date dateTaken, String zooTaking, String nameOfTaker, String aim, Double cost, Date dateReturn)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
-            Zoo zooG = SimpleSearch.searchZooByName(zooGiving);
-            Zoo zooR = SimpleSearch.searchZooByName(zooTaking);
-            Animals animals = (SimpleSearch.searchAnimalByName(animal)).get(0);
+            Zoo zooG = ss.searchZooByName(zooGiving);
+            Zoo zooR = ss.searchZooByName(zooTaking);
+            Animals animals = (ss.searchAnimalByName(animal)).get(0);
             AnimalRential ar = new AnimalRential();
             ar.setДатаВзятия(dateTaken);
             ar.setДатаВозврата(dateReturn);
@@ -174,22 +177,22 @@ public class Insert {
      * @see Mentions
      */
 
-    public static void mentionInsert( String name, String kindOfMentioning, String zoo, String animal, String employee, Date date)
+    public void mentionInsert( String name, String kindOfMentioning, String zoo, String animal, String employee, Date date)
     {
         try {
-            MentionType mentioningItem= SimpleSearch.searchMentionTypeByName(kindOfMentioning);
+            MentionType mentioningItem= ss.searchMentionTypeByName(kindOfMentioning);
             if(mentioningItem==null) throw new Exception();
             int idKindOfMentioning = mentioningItem.getIdВидаУпоминания();
 
-            List<Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
+            List<Employees> employeeItem = ss.searchEmployeeByName(employee);
             int idEmployee = 0;
             if(employeeItem.size()!=0)idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            Zoo zooItem= ss.searchZooByName(zoo);
             int idZoo = 0;
             if(zooItem != null) idZoo = zooItem.getIdЗоопарка();
 
-            List <Animals> animalItem = SimpleSearch.searchAnimalByName(animal);
+            List <Animals> animalItem = ss.searchAnimalByName(animal);
             if(animalItem.size()==0) throw new Exception();
             int idAnimal = animalItem.get(0).getIdЖивотного();
 
@@ -216,18 +219,18 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see Events
      */
-    public static void eventInsert( String name, String zoo, String kind, String employee, Date date, Double duration, Double cost)
+    public void eventInsert( String name, String zoo, String kind, String employee, Date date, Double duration, Double cost)
     {
         try {
-            List <Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
+            List <Employees> employeeItem = ss.searchEmployeeByName(employee);
             if(employeeItem.size()==0) throw new Exception();
             int idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            Zoo zooItem= ss.searchZooByName(zoo);
             if(zooItem == null) throw new Exception();
             int idZoo = zooItem.getIdЗоопарка();
 
-            EventType eventItem= SimpleSearch.searchEventTypeByName(kind);
+            EventType eventItem= ss.searchEventTypeByName(kind);
             if(eventItem==null) throw new Exception();
             int idKind = eventItem.getIdТипаМероприятия();
 
@@ -256,18 +259,18 @@ public class Insert {
      * @see Tickets
      */
 
-    public static void ticketInsert( String zoo, String employee, Date date, String category)
+    public void ticketInsert( String zoo, String employee, Date date, String category)
     {
         try {
-            List <Employees> employeeItem = SimpleSearch.searchEmployeeByName(employee);
+            List <Employees> employeeItem = ss.searchEmployeeByName(employee);
             if(employeeItem.size()==0) throw new Exception();
             int idEmployee = employeeItem.get(0).getIdСотрудника();
 
-            Zoo zooItem= SimpleSearch.searchZooByName(zoo);
+            Zoo zooItem= ss.searchZooByName(zoo);
             if(zooItem == null) throw new Exception();
             int idZoo = zooItem.getIdЗоопарка();
 
-            TicketsType categoryItem = SimpleSearch.searchTicketsTypeByName(category);
+            TicketsType categoryItem = ss.searchTicketsTypeByName(category);
             if(categoryItem==null) throw new Exception();
             int idCategory = categoryItem.getIdКатегории();
 
@@ -294,7 +297,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see Employees
      */
-    public static void employeeInsert( String name, String sex, String profession, String education, Double workExperience)
+    public void employeeInsert( String name, String sex, String profession, String education, Double workExperience)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -320,18 +323,18 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see Animals
      */
-    public static void animalInsert( String name, String kind, Date dateOfBirth, String features, String father, String mother, String condition)
+    public void animalInsert( String name, String kind, Date dateOfBirth, String features, String father, String mother, String condition)
     {
         try {
-            AnimalType animalKindItem = SimpleSearch.searchAnimalTypeByName(kind);
+            AnimalType animalKindItem = ss.searchAnimalTypeByName(kind);
             if(animalKindItem==null) throw new Exception();
             int idKind = animalKindItem.getIdВида();
 
-            List<Animals> animalItemF = SimpleSearch.searchAnimalByName(father);
+            List<Animals> animalItemF = ss.searchAnimalByName(father);
             int idFather=0;
             if(animalItemF.size()!=0) idFather = animalItemF.get(0).getIdЖивотного();
 
-            List<Animals> animalItemM= SimpleSearch.searchAnimalByName(mother);
+            List<Animals> animalItemM= ss.searchAnimalByName(mother);
             int idMother=0;
             if(animalItemM.size()!=0) idMother = animalItemM.get(0).getIdЖивотного();
 
@@ -362,7 +365,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see Flora
      */
-    public static void floraInsert( String nameOfKind, String featuresOfKind)
+    public void floraInsert( String nameOfKind, String featuresOfKind)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -384,7 +387,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see ActivityType
      */
-    public static void activityTypeInsert( String nameOfKindOfActivity, String description)
+    public void activityTypeInsert( String nameOfKindOfActivity, String description)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -406,7 +409,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see TicketsType
      */
-    public static void ticketsTypeInsert( String nameOfCategory, String description, Double cost)
+    public void ticketsTypeInsert( String nameOfCategory, String description, Double cost)
     {
         try {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -429,7 +432,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see MentionType
      */
-    public static void mentionTypeInsert( String nameOfKindOfMentionings)
+    public void mentionTypeInsert( String nameOfKindOfMentionings)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -450,7 +453,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see EventType
      */
-    public static void eventTypeInsert( String nameOfKindOfEvents)
+    public void eventTypeInsert( String nameOfKindOfEvents)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -471,7 +474,7 @@ public class Insert {
      * Функция вставки записи в таблицу
      * @see AnimalType
      */
-    public static void animalTypeInsert( String name, String features, Double average)
+    public void animalTypeInsert( String name, String features, Double average)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -494,7 +497,7 @@ public class Insert {
     /**
      * Добавление нового пользователя
      */
-    public static int userInsert( String username, String password, String role)
+    public int userInsert( String username, String password, String role)
     {
         try {
             String userRole;

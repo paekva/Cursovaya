@@ -5,21 +5,16 @@ import ru.iad.dao.SimpleSearch;
 import ru.iad.entities.News;
 import ru.iad.response.ResponseNews;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import java.util.ArrayList;
-import java.util.List;
+import javax.ejb.*;
+import javax.ws.rs.*;
+import java.util.*;
 
 @Path("/news")
 @Stateless
 public class NewsService {
 
     @EJB
-    SimpleSearch simpleSearch;
+    private SimpleSearch simpleSearch;
 
     @GET
     @Path("/all")
@@ -34,9 +29,8 @@ public class NewsService {
             ResponseNews news = new ResponseNews(newsList.get(i).getId(),newsList.get(i).getHeader(),newsList.get(i).getDate(),newsList.get(i).getContent());
             responseNews.add(news);
         }
-		
-        String json = gson.toJson(responseNews);
-        return json;
+
+        return gson.toJson(responseNews);
     }
 
     @GET
@@ -44,8 +38,8 @@ public class NewsService {
     public String singleNews(@PathParam("id") Integer id){
         News news = simpleSearch.searchNewsyId(id);
         Gson gson = new Gson();
-        String json = gson.toJson(news);
-        return json;
+
+        return gson.toJson(news);
     }
 }
 

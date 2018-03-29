@@ -1,21 +1,15 @@
 package ru.iad.restful.admin;
 /*READY, NOT TESTED*/
 import ru.iad.dao.Update;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateful;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import java.util.Date;
+import javax.ejb.*;
+import javax.ws.rs.*;
 
 @Path("/admin/change")
 @Stateful
 public class ChangeInfoService {
 
     @EJB
-    Update update;
+    private Update update;
 
     @POST
     @Path("/animal")

@@ -1,11 +1,8 @@
 package ru.iad.restful.auth;
 
-import ru.iad.dao.Update;
+import ru.iad.dao.*;
 import ru.iad.entities.User;
-import ru.iad.dao.Insert;
-import ru.iad.dao.SimpleSearch;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
@@ -15,13 +12,13 @@ import javax.ws.rs.core.Response;
 public class AuthRequests {
 
     @EJB
-    Insert insert;
+    private Insert insert;
 
     @EJB
-    SimpleSearch ss;
+    private SimpleSearch ss;
 
     @EJB
-    Update update;
+    private Update update;
 
     @POST
     @Path("registration")
@@ -46,7 +43,7 @@ public class AuthRequests {
         if(fu==null) return Response.status(200)
                 .entity("user not found")
                 .build();
-        if(fu.getPassword()==password) return Response.status(200)
+        if(fu.getPassword().equals(password)) return Response.status(200)
                 .entity("succes")
                 .build();
         else return Response.status(200)
@@ -59,7 +56,7 @@ public class AuthRequests {
     public Response addNewInfo
             (@FormParam("username") String username,@FormParam("name") String name,
              @FormParam("email") String email,@FormParam("info") String info) {
-        if(update.userInfoUpdate(username, name, email, info)==true) return Response.status(200)
+        if(update.userInfoUpdate(username, name, email, info)) return Response.status(200)
                 .entity("succes")
                 .build();
         else return Response.status(200)

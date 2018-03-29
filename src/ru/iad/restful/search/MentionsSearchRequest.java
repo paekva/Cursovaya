@@ -1,165 +1,124 @@
-package ru.pip.search;
-/*import org.hibernate.SessionFactory;
-import ru.pip.dao.crud.HibernateSessionFactory;
-import ru.pip.dao.entities.*;
-import org.hibernate.Session;
+package ru.iad.restful.search;
 
-        import javax.ejb.EJB;
-        import javax.ejb.Stateless;
+import com.google.gson.Gson;
+import ru.iad.dao.ComplexSearch;
+import ru.iad.dao.SimpleSearch;
+import ru.iad.entities.*;
+import ru.iad.response.ResponseMention;
+
+import javax.ejb.*;
 import javax.ws.rs.*;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-        import static ru.pip.dao.crud.SimpleSearch.*;
-        import static ru.pip.dao.crud.ComplexSearch.*;
 
 @Path("/search/mentions/")
 @Stateless
 public class MentionsSearchRequest {
     @EJB
-    private HibernateSessionFactory mainBean;
+    private SimpleSearch ss;
+
+    @EJB
+    private ComplexSearch cs;
+
+    @POST
+    @Path("byZoo")
+    @Produces({"application/xml","application/json"})
+    public String findMentionsByZoo(@FormParam("zoo") String zoo){
+        List<Mentions> mentionsList = cs.searchMentionsByZoo(zoo);
+        List<MentionHelp> re=new ArrayList<>();
+        for(Mentions m: mentionsList)
+        {
+            MentionType mt = ss.searchMentionTypeById(m.getIdВидаУпоминания());
+            MentionHelp eh = new MentionHelp(
+                    m.getНазваниеУпоминания(),mt.getНазваниеВидаУпоминания(),
+                    m.getIdУпоминания()
+            );
+            re.add(eh);
+        }
+        Gson gson = new Gson();
+        return gson.toJson(re);
+    }
+
+    @POST
+    @Path("byName")
+    @Produces({"application/xml","application/json"})
+    public String findMentionByName(@FormParam("name") String name){
+        Mentions mention = ss.searchMentionByName(name);
+        MentionType mt = ss.searchMentionTypeById(mention.getIdВидаУпоминания());
+        MentionHelp mentionHelp = new MentionHelp(
+                    mention.getНазваниеУпоминания(),mt.getНазваниеВидаУпоминания(),
+                    mention.getIdУпоминания()
+        );
+        Gson gson = new Gson();
+        return gson.toJson(mentionHelp);
+    }
+
+
+    @POST
+    @Path("byType")
+    @Produces({"application/xml","application/json"})
+    public String findEventsByType(@FormParam("type") String type){
+        List<Mentions> mentionsList = cs.searchMentionsByType(type);
+        List<MentionHelp> re=new ArrayList<>();
+        for(Mentions m: mentionsList)
+        {
+            MentionHelp eh = new MentionHelp(
+                    m.getНазваниеУпоминания(),type,
+                    m.getIdУпоминания()
+            );
+            re.add(eh);
+        }
+        Gson gson = new Gson();
+        return gson.toJson(re);
+
+    }
+
+
+    @POST
+    @Path("byDate")
+    @Produces({"application/xml","application/json"})
+    public String findEventByDate(@FormParam("date") Date date, @FormParam("before") Boolean before){
+        List<Events> event = cs.searchEventByDate(date,before);
+        List<EventHelp> re=new ArrayList<>();
+        for(Events e: event)
+        {
+            Zoo zoo = ss.searchZooById(e.getIdЗоопарка());
+            EventHelp eh = new EventHelp(
+                    e.getНазвание(),zoo.getНазвание(),e.getIdМероприятия()
+            );
+            re.add(eh);
+        }
+        Gson gson = new Gson();
+        return gson.toJson(re);
+    }
 
     @GET
-    @Path("zoo/{zoo}")
+    @Path("byId/{id}")
     @Produces({"application/xml","application/json"})
-    public String helloworld(@PathParam("zoo") String zoo){
-        return "hello"+zoo;
-    }
-
-    @POST
-    @Path("zoo/{zoo}")
-    @Produces({"application/xml","application/json"})
-    public List<Mentions> findAnimalsByZoo(@PathParam("zoo") String zoo){
-        Session session = mainBean.getSessionFactory().openSession();
-        try {
-            List<УпоминанияОЗоопаркеEntity> mentionsList = searchMentionsByZoo(session,zoo);
-            if(mentionsList == null) throw new Exception();
-
-            List<Mentions> mentions = new ArrayList<Mentions>();
-
-            for (УпоминанияОЗоопаркеEntity a: mentionsList) {
-                Mentions newMention = new Mentions(a.getНазваниеУпоминания(), zoo, a.getIdУпоминания());
-                mentions.add(newMention);
-            }
-
-            return mentions;
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
-    @POST
-    @Path("type/{type}")
-    @Produces({"application/xml","application/json"})
-    public List<Mentions> findAnimalsByType(@PathParam("type") String type){
-        Session session = mainBean.getSessionFactory().openSession();
-        try {
-            List<УпоминанияОЗоопаркеEntity> mentionsList = searchMentionsByType(session,type);
-            if(mentionsList == null) throw new Exception();
-
-            List<Mentions> mentions = new ArrayList<Mentions>();
-
-            for (УпоминанияОЗоопаркеEntity a: mentionsList) {
-                ЗоопаркиEntity zoo = searchZooById(session,a.getIdЗоопарка());
-                Mentions newMention = new Mentions(a.getНазваниеУпоминания(), zoo.getНазвание(), a.getIdУпоминания());
-                mentions.add(newMention);
-            }
-
-            return mentions;
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
-    @POST
-    @Path("date/{date}/{rule}")
-    @Produces({"application/xml","application/json"})
-    public List<Mentions> findAnimalsByDateBefore(@PathParam("date") String dateStr, @PathParam("rule") Boolean rule ){
-        Session session = mainBean.getSessionFactory().openSession();
-        try {
-            Date date = new Date(); //!!!!!!!!!!!!!!!!!!!!!!
-            List<УпоминанияОЗоопаркеEntity> mentionsList = searchMentionsByDate(session,date,rule);
-            if(mentionsList == null) throw new Exception();
-
-            List<Mentions> mentions = new ArrayList<Mentions>();
-
-            for (УпоминанияОЗоопаркеEntity a: mentionsList) {
-                ЗоопаркиEntity zoo = searchZooById(session,a.getIdЗоопарка());
-                Mentions newMention = new Mentions(a.getНазваниеУпоминания(), zoo.getНазвание(), a.getIdУпоминания());
-                mentions.add(newMention);
-            }
-
-            return mentions;
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
-    @POST
-    @Path("mention/{id}")
-    @Produces({"application/xml","application/json"})
-    public ResponseMention findMention(@PathParam("id") Integer id){
-        Session session = mainBean.getSessionFactory().openSession();
-        try {
-            УпоминанияОЗоопаркеEntity foundMention = searchMentionById(session,id);
-            ВидыУпоминанийEntity type = searchKindOfMentionsById(session, foundMention.getIdВидаУпоминания());
-            ЖивотныеEntity animal = searchAnimalById(session, foundMention.getIdЖивотного());
-            String zooStr="Не известно";
-            if(foundMention.getIdЗоопарка()!=null)
-            {
-                ЗоопаркиEntity zoo = searchZooById(session,foundMention.getIdЗоопарка());
-                zooStr = zoo.getНазвание();
-            }
-            String emplStr="Не известно";
-            if(foundMention.getIdСотрудника()!=null)
-            {
-                СотрудникиEntity emploee = searchEmployeeById(session,foundMention.getIdСотрудника());
-                emplStr = emploee.getФио();
-            }
-
-            ResponseMention mention = new ResponseMention
-                    (foundMention.getНазваниеУпоминания(),type.getНазваниеВидаУпоминания(),
-                            foundMention.getДатаПубликации(),animal.getИмя(), zooStr, emplStr);
-            return mention;
-        }
-        catch (Exception e) {
-            return null;
-        }
+    public String findEventById(@PathParam("id") Integer id){
+        Gson gson = new Gson();
+        Mentions mention = ss.searchMentionById(id);
+        MentionType et = ss.searchMentionTypeById(mention.getIdВидаУпоминания());
+        Employees emp = ss.searchEmployeeById(mention.getIdСотрудника());
+        Zoo zoo = ss.searchZooById(mention.getIdЗоопарка());
+        Animals animal = ss.searchAnimalById(mention.getIdЖивотного());
+        ResponseMention rm = new ResponseMention(
+                mention.getНазваниеУпоминания(), et.getНазваниеВидаУпоминания(),
+                mention.getДатаПубликации(), animal.getИмя(), zoo.getНазвание(), emp.getФио()
+        );
+        return gson.toJson(rm);
     }
 }
 
-class Mentions
+class MentionHelp
 {
     private String name;
-    private String zoo;
+    private String type;
     private Integer id;
 
-    public Mentions(String name, String zoo, Integer id) {
+    public MentionHelp(String name, String type, Integer id) {
         this.name = name;
-        this.zoo = zoo;
+        this.type = type;
         this.id = id;
     }
 }
-
-class ResponseMention {
-    private String name;
-    private String type;
-    private Date date;
-    private String animal;
-    private String zoo;
-    private String worker;
-
-    public ResponseMention(String name, String type, Date date, String animal, String zoo, String worker) {
-        this.name = name;
-        this.type = type;
-        this.date = date;
-        this.animal = animal;
-        this.zoo = zoo;
-        this.worker = worker;
-    }
-}*/

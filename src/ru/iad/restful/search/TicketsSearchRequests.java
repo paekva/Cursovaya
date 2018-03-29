@@ -1,85 +1,118 @@
-package ru.iad.restful.search;
+package ru.pip.search;
+/*
+import org.hibernate.SessionFactory;
+import ru.pip.dao.crud.HibernateSessionFactory;
+import ru.pip.dao.entities.*;
+import org.hibernate.Session;
 
-import com.google.gson.Gson;
-import ru.iad.dao.ComplexSearch;
-import ru.iad.dao.SimpleSearch;
-import ru.iad.entities.*;
-import ru.iad.response.ResponseMention;
-import ru.iad.response.ResponseTickets;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
-import javax.ejb.*;
-import javax.ws.rs.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import static ru.pip.dao.crud.SimpleSearch.*;
+import static ru.pip.dao.crud.ComplexSearch.*;
 
 @Path("/search/tickets/")
 @Stateless
 public class TicketsSearchRequests {
     @EJB
-    private SimpleSearch ss;
+    private HibernateSessionFactory mainBean;
 
-    @EJB
-    private ComplexSearch cs;
-
-    @POST
-    @Path("byZoo")
+    /*  Поиск билетов для админа по дате и по зоопарку  */
+    /*  Поиск билетов для пользователя по своему id  */
+   /* @POST
+    @Path("date/{date}/{rule}")
     @Produces({"application/xml","application/json"})
-    public String findTicketsByZoo(@FormParam("zoo") String zoo){
-        List<Tickets> ticketsList = cs.searchTicketsByZoo(zoo);
-        List<ResponseTickets> re=new ArrayList<>();
-        for(Tickets t: ticketsList)
-        {
-            TicketsType tt = ss.searchTicketsTypeById(t.getIdКатегории());
-            ResponseTickets eh = new ResponseTickets(
-                    zoo,t.getДатаПокупки(),tt.getНазваниеКатегории()
-            );
-            re.add(eh);
-        }
-        Gson gson = new Gson();
-        return gson.toJson(re);
-    }
+    public List<Ticket> findTicketsByDate(@PathParam("date") String dateStr, @PathParam("rule") Boolean rule )
+    {
+        Session session = mainBean.getSessionFactory().openSession();
+        try {
+            Date date = new Date(); //!!!!!!!!!!!!!!!!!!!!!!
+            List<БилетыEntity> ticketsList = searchTicketsByDate(session,date,rule);
+            if(ticketsList == null) throw new Exception();
 
-    @POST
-    @Path("byDate")
-    @Produces({"application/xml","application/json"})
-    public String findTicketsByDate(@FormParam("date") Date date, @FormParam("before") Boolean before){
-        List<Tickets> tickets = ss.searchTicketsByDate(date,before);
-        List<ResponseTickets> re=new ArrayList<>();
-        for(Tickets t: tickets)
-        {
-            TicketsType tt = ss.searchTicketsTypeById(t.getIdКатегории());
-            Zoo zoo = ss.searchZooById(t.getIdЗоопарка());
-            ResponseTickets eh = new ResponseTickets(
-                    zoo.getНазвание(),t.getДатаПокупки(),tt.getНазваниеКатегории()
-            );
-            re.add(eh);
-        }
-        Gson gson = new Gson();
-        return gson.toJson(re);
-    }
+            List<Ticket> tickets = new ArrayList<Ticket>();
 
-
-    @POST
-    @Path("byType")
-    @Produces({"application/xml","application/json"})
-    public String findTicketsByType(@FormParam("type") String type){
-        TicketsType tt = ss.searchTicketsTypeByName(type);
-        List<Tickets> ticketsList = ss.searchAllTickets();
-        List<ResponseTickets> rt=new ArrayList<>();
-        for(Tickets t: ticketsList)
-        {
-            if(t.getIdКатегории() == tt.getIdКатегории())
-            {
-                Zoo zoo = ss.searchZooById(t.getIdЗоопарка());
-                ResponseTickets responseTicketst = new ResponseTickets(
-                     zoo.getНазвание(), t.getДатаПокупки(), type
-                );
-                rt.add(responseTicketst);
+            for (БилетыEntity a: ticketsList) {
+                ВидыКатегорийEntity type = searchKindOfCategoryById(session, a.getIdКатегории());
+                ЗоопаркиEntity zoo = searchZooById(session,a.getIdЗоопарка());
+                Ticket newTicket = new Ticket(type.getНазваниеКатегории(),date,zoo.getНазвание());
+                tickets.add(newTicket);
             }
+            return tickets;
         }
-        Gson gson = new Gson();
-        return gson.toJson(rt);
-
+        catch (Exception e) {
+            return null;
+        }
     }
 
+    @POST
+    @Path("zoo/{zoo}")
+    @Produces({"application/xml","application/json"})
+    public List<Ticket> findTicketsByZoo(@PathParam("zoo") String zoo)
+    {
+        Session session = mainBean.getSessionFactory().openSession();
+        try {
+            List<БилетыEntity> ticketsList = searchTicketsByZoo(session,zoo);
+            if(ticketsList == null) throw new Exception();
+
+            List<Ticket> tickets = new ArrayList<Ticket>();
+
+            for (БилетыEntity a: ticketsList) {
+                ВидыКатегорийEntity type = searchKindOfCategoryById(session, a.getIdКатегории());
+                Ticket newTicket = new Ticket(type.getНазваниеКатегории(),a.getДатаПокупки(),zoo);
+                tickets.add(newTicket);
+            }
+            return tickets;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    @POST
+    @Path("user/{user}")
+    @Produces({"application/xml","application/json"})
+    public List<Ticket> findTicketsByUser(@PathParam("user") Integer id)
+    {
+        Session session = mainBean.getSessionFactory().openSession();
+        try {
+            List<БилетыEntity> ticketsList = searchTicketsByUser(session,id);
+            if(ticketsList == null) throw new Exception();
+
+            List<Ticket> tickets = new ArrayList<Ticket>();
+
+            for (БилетыEntity a: ticketsList) {
+                ВидыКатегорийEntity type = searchKindOfCategoryById(session, a.getIdКатегории());
+                ЗоопаркиEntity zoo = searchZooById(session,a.getIdЗоопарка());
+                Ticket newTicket = new Ticket(type.getНазваниеКатегории(),a.getДатаПокупки(),zoo.getНазвание());
+                tickets.add(newTicket);
+            }
+            return tickets;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 }
+
+class Ticket
+{
+    private String type;
+    private Date date;
+    private String zoo;
+
+    public Ticket(String type, Date date, String zoo) {
+        this.type = type;
+        this.date = date;
+        this.zoo = zoo;
+    }
+}
+*/

@@ -678,30 +678,6 @@ public class SimpleSearch {
 
 
     /**
-     * Функция поиска записи в таблице
-     * @see Places по
-     * @see Animals
-     * @return Возвращает лист площадок, записанных под данным именем
-     */
-    public Places searchPlaceByAnimal(Animals animal)
-    {
-        try {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
-            EntityManager em = emf.createEntityManager();
-            if (em != null) {
-                Query query = em.createQuery("SELECT m from Places as m WHERE m.idЖивотного=:paramName");
-                query.setParameter("paramName", animal.getIdЖивотного());
-                return (Places)query.getSingleResult();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * Функция поиска пользователя
      * @see User по имени
      */

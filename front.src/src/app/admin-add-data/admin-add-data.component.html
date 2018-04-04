@@ -1,0 +1,17 @@
+<div>
+    <h1>Добавить данные в базу</h1>
+  
+    <div>
+        <label>В таблицу под названием:</label>
+         <select class="form-control dropdowns">
+             <option *ngFor="let table of tables" [value]="table.value">  
+                 {{table.display}}
+             </option>
+         </select>
+    </div>
+
+    <!-- Здесь будут динамически еще появляться компоненты для добавления данных в бд -->
+    <div>
+        <label>Введите данные</label>
+    </div>
+</div>

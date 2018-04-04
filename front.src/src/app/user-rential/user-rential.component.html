@@ -1,0 +1,38 @@
+<h3>Форма заявки на прокат животного из зоопарка</h3>
+
+<div>
+  <form>
+      <div>
+          <label> Выберите зоопарк </label>
+          <select class="form-control form" formControlName="zoo" (change) = onZooChange($event.target.value)>
+              <option *ngFor="let zoo of zoos" [value]="zoo.value">  
+                  {{zoo.display}}
+              </option>
+          </select>
+  
+          <label> Выберите животное </label>
+          <select class="form-control form" formControlName="animal" (change) = onAnimalChange($event.target.value)>
+              <option *ngFor="let animal of animals" [value]="animal.value">  
+                  {{animal.display}}
+              </option>
+          </select>
+
+          <label>ФИО</label>
+          <input class="form-control form " type="text" formControlName="name" (change) = onNameChange($event.target.value)/>
+
+          <label>Цель</label>
+          <input class="form-control form" type="text" formControlName="purpose" (change) = onPurposeChange($event.target.value)/>
+
+          <label>Email адрес для связи с представителем зоопарка</label>
+          <input class="form-control form" type="text" formControlName="email" (change) = onEmailChange($event.target.value)/>
+
+          <label>Дата взятия</label>
+          <input class="form-control form" type="date" formControlName="dateTake" (change) = onDateTakeChange($event.target.value)/>
+
+          <label>Дата возврата</label>
+          <input class="form-control form" type="date" formControlName="dateReturn" (change) = onDateReturnChange($event.target.value)/>
+      </div>
+      <br><button (click) = sendRequest() class="btn btn-success" type="submit">Отправить заявку</button>
+  </form>
+
+</div>

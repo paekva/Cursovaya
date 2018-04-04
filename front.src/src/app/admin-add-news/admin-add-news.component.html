@@ -1,0 +1,20 @@
+<div>
+    <h1>Добавить новость</h1>
+    <form (submit) = onSubmit($event)>
+            <div id="title">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-lg">Заголовок</span>
+                    </div>
+                    <input (change) = titleChange($event.target.value) formControlName="title" type="text" class="form-control" aria-label="Заголовок" aria-describedby="inputGroup-sizing-sm">
+            </div>
+        
+            <br>
+            <div class="input-group-prepend">
+                    <span class="input-group-text">Новость</span>
+            </div>
+            <textarea (change) = contentChange($event.target.value) formControlName="news" class="form-control" aria-label="With textarea"></textarea>
+        
+            <br/>
+            <button type="submit" class="btn btn-success">Добавить</button> 
+    </form> 
+</div>

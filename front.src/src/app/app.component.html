@@ -1,0 +1,20 @@
+<nav class="header">
+  <app-header></app-header>     
+</nav>
+
+<div class="row" id="center">
+  <div class="col-sm-6 col-md-3 col-lg-2">
+      <div class="menu">
+          <app-menu></app-menu>
+      </div>
+  </div>
+  <div id="main" class="col-sm-6 col-md-6 col-lg-6 mainContent">
+      <router-outlet></router-outlet>
+  </div>
+  <div class="col-sm-6 col-md-3 col-lg-4">
+    <app-news></app-news>
+  </div>
+</div>  
+  <footer class="container-fluid text-center">
+    <p>Footer Text</p>
+  </footer>

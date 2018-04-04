@@ -1,0 +1,39 @@
+<div>
+  <h1>Информация о аккаунте</h1>
+  <h4><b>Ваш логин:</b> <i>{{getLogin}}</i></h4>
+  <h4><b>Имя:</b> <i>{{getName}}</i></h4>
+  <h4><b>Email:</b> <i>{{getEmail}}</i></h4>
+  <h4><b>Дополнительная информация:</b> <i>{{getInfo}}</i></h4><br>
+</div>
+
+<div>
+  <h3>Настройки аккаунта</h3>
+
+  <h4>Изменить личную информацию</h4>
+  <div class="form-group">
+      <label>Имя:</label> 
+      <input class="form-control other" (change) = newName($event.target.value) type="text" />
+  </div>
+  <div class="form-group">
+      <label>Email:</label> 
+      <input class="form-control inputs" (change) = newEmail($event.target.value) type="email" />
+  </div>
+  <div class="form-group">
+      <label>Информация:</label> 
+      <textarea class="form-control other" (change) = newInfo($event.target.value)></textarea>
+  </div>
+  <button (click) = changeInfo() class="btn btn-success" type="button">Обновить профиль</button>
+
+  <br>
+  <h4>Изменить пароль</h4>
+  <div class="form-group">
+      <label>Введите действующий пароль:</label> 
+      <input class="form-control inputs" (change) = oldPassword($event.target.value) type="password" /> 
+      <p *ngIf="!show" class="alert alert-danger inputs"> wrong password  </p>
+  </div>
+  <div>
+      <label>Введите новый пароль: </label>  
+      <input class="form-control inputs" (change) = newPassword($event.target.value) type="password" /> <br>    
+  </div>
+  <button (click) = changePassword() class="btn btn-success" type="button">Изменить пароль</button>
+</div>

@@ -25,19 +25,10 @@ export class AdminAddNewsComponent implements OnInit {
   onSubmit(event)
   {
     this.nNews.date = new Date();
+
+    //отправить на сервер JSON.stringify(this.nNews)
   }
 
-  titleChange(title)
-  {
-    console.log("title");
-    this.nNews.title = title;
-  }
-
-  contentChange(content)
-  {
-    console.log(content);
-    this.nNews.content = content;
-  }
-
-  get currentNews() { return JSON.stringify(this.nNews); }
+  titleChange(title) { this.nNews.title = title; }
+  contentChange(content) { this.nNews.content = content; }
 }

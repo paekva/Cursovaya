@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormBuilder } from '@angular/forms';
+import { ZooService } from '../services/services';
 
 @Component({
   selector: 'app-admin-employees',
@@ -7,9 +9,40 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminEmployeesComponent implements OnInit {
 
-  constructor() { }
+  public zoos=[];
+  choosedZoo: string = "";
+  name: string ="";
 
-  ngOnInit() {
+  public errorMsg;
+  public results = "вами не был запущен никакой процесс поиска";
+  private searchForm;
+
+  constructor(private fb: FormBuilder, private _zooService: ZooService) {
+    this.searchForm = this.fb.group({
+      title: '',
+      news: ''
+    });
   }
 
+  ngOnInit() {
+    this._zooService.getZoos()
+      .subscribe(data => this.zoos = data,
+                error => this.errorMsg = error); 
+              }
+
+  onZooChange(zoo) { this.choosedZoo = zoo; }
+  
+  /*
+  onZooSubmit(){
+    //search for emloyess, who work in zoo with id this.choosedZoo
+    this._employeeService.getEmployeesByZoo(this.choosedZoo)
+      .subscribe(data => this.zoos = data,
+                error => this.errorMsg = error);
+  }
+  onNameSubmit() {
+    //search for employee, called this.name
+    this._employeeService.getEmployeesByName(this.name)
+      .subscribe(data => this.zoos = data,
+                error => this.errorMsg = error);
+  }*/
 }

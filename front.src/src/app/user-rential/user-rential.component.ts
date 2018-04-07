@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { RentialModel } from './rential.model';
+import { ZooService } from '../services/services';
+import { AnimalService } from '../services/animal.service';
 
 @Component({
   selector: 'app-user-rential',
@@ -10,17 +12,14 @@ import { RentialModel } from './rential.model';
 export class UserRentialComponent implements OnInit {
 
   private rentialForm;
-
-  public zoos = [
-    { value: '1801', display: 'Омский национальнй зоопарк' },
-    { value: '200', display: 'Московский зоопарк' }
-  ];
+  public errorMsg;
+  public zoos = [];
 
   public animals;
   request = new RentialModel('','','','','',null,null);
   
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _zooService: ZooService) {
     this.rentialForm = this.fb.group({
       zoo: '',
       animal: '',
@@ -34,28 +33,13 @@ export class UserRentialComponent implements OnInit {
 
   onZooChange(zoo)
   {
-   if (zoo==1801) {
-    this.animals = [
-      { value: '1', display: 'Млекопитающие' },
-      { value: '2', display: 'Земноводные' },
-      { value: '3', display: 'Присмыкающиеся' }
-    ];
-   } else{
-    this.animals = [
-      { value: '1', display: 'Ночь в зоопарке' },
-      { value: '2', display: 'Бесплатная экскурсия' },
-      { value: '3', display: 'Открытый вольер' }
-    ];
-   }
+    this._zooService.getAnimalsByZoo(zoo)
+      .subscribe(data => this.animals = data,
+                  error => this.errorMsg = error);
     this.request.zoo = zoo;    
   }
 
   onAnimalChange(animal) { this.request.animal = animal; }
-  onNameChange(animal) { this.request.name = animal; }
-  onPurposeChange(animal) { this.request.purpose = animal; }
-  onEmailChange(animal) { this.request.email = animal; }
-  onDateTakeChange(animal) { this.request.dateTake = animal; }
-  onDateReturnChange(animal) { this.request.dateReturn = animal; }
 
   sendRequest()
   {
@@ -63,6 +47,9 @@ export class UserRentialComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
+    this._zooService.getZoos()
+      .subscribe(data => this.zoos = data,
+                error => this.errorMsg = error);
+}
 
 }

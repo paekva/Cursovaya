@@ -29,6 +29,7 @@ import { AdminEditComponent } from './admin-edit/admin-edit.component';
 import { AdminTicketsComponent } from './admin-tickets/admin-tickets.component';
 import { AdminEmployeesComponent } from './admin-employees/admin-employees.component';
 import { ZoosComponent } from './zoos/zoos.component';
+import { ZooService } from './services/services';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -84,7 +85,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [GuardsGuard],
+  providers: [GuardsGuard, ZooService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

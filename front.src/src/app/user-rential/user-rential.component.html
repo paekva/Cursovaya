@@ -5,8 +5,8 @@
       <div>
           <label> Выберите зоопарк </label>
           <select class="form-control form" formControlName="zoo" (change) = onZooChange($event.target.value)>
-              <option *ngFor="let zoo of zoos" [value]="zoo.value">  
-                  {{zoo.display}}
+              <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+                  {{zoo.name}}
               </option>
           </select>
   
@@ -18,19 +18,19 @@
           </select>
 
           <label>ФИО</label>
-          <input class="form-control form " type="text" formControlName="name" (change) = onNameChange($event.target.value)/>
+          <input class="form-control form " type="text" formControlName="name" [(ngModel)]="name"/>
 
           <label>Цель</label>
-          <input class="form-control form" type="text" formControlName="purpose" (change) = onPurposeChange($event.target.value)/>
+          <input class="form-control form" type="text" formControlName="purpose" [(ngModel)]="purpose"/>
 
           <label>Email адрес для связи с представителем зоопарка</label>
-          <input class="form-control form" type="text" formControlName="email" (change) = onEmailChange($event.target.value)/>
+          <input class="form-control form" type="text" formControlName="email" [(ngModel)]="email" />
 
           <label>Дата взятия</label>
-          <input class="form-control form" type="date" formControlName="dateTake" (change) = onDateTakeChange($event.target.value)/>
+          <input class="form-control form" type="date" formControlName="dateTake" [(ngModel)]="dateTake" />
 
           <label>Дата возврата</label>
-          <input class="form-control form" type="date" formControlName="dateReturn" (change) = onDateReturnChange($event.target.value)/>
+          <input class="form-control form" type="date" formControlName="dateReturn" [(ngModel)]="dateReturn"/>
       </div>
       <br><button (click) = sendRequest() class="btn btn-success" type="submit">Отправить заявку</button>
   </form>

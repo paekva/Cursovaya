@@ -1,10 +1,12 @@
 <div>
   <h1>Информация о аккаунте</h1>
-  <h4><b>Ваш логин:</b> <i>{{getLogin}}</i></h4>
-  <h4><b>Имя:</b> <i>{{getName}}</i></h4>
-  <h4><b>Email:</b> <i>{{getEmail}}</i></h4>
-  <h4><b>Дополнительная информация:</b> <i>{{getInfo}}</i></h4><br>
+  <h4><b>Ваш логин:</b> <i>{{account.login}}</i></h4>
+  <h4><b>Имя:</b> <i>{{account.name}}</i></h4>
+  <h4><b>Email:</b> <i>{{account.email}}</i></h4>
+  <h4><b>Дополнительная информация:</b> <i>{{account.info}}</i></h4><br>
 </div>
+
+<button class="succes succes-succes inputs" type="button">Выйти из аккаунта</button>
 
 <div>
   <h3>Настройки аккаунта</h3>
@@ -29,11 +31,12 @@
   <div class="form-group">
       <label>Введите действующий пароль:</label> 
       <input class="form-control inputs" (change) = oldPassword($event.target.value) type="password" /> 
-      <p *ngIf="!show" class="alert alert-danger inputs"> wrong password  </p>
+      <p *ngIf="!show" class="alert alert-danger inputs"> Неверный пароль </p>
   </div>
   <div>
       <label>Введите новый пароль: </label>  
       <input class="form-control inputs" (change) = newPassword($event.target.value) type="password" /> <br>    
   </div>
   <button (click) = changePassword() class="btn btn-success" type="button">Изменить пароль</button>
+  <p *ngIf="succes" class="succes succes-succes inputs"> Ваш пароль был изменен </p>
 </div>

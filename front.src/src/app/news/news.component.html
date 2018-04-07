@@ -1,3 +1,7 @@
-<p>
-  news works!
-</p>
+<div style="display: inline-block;">
+  <div *ngFor="let new of news" style="width: 100%">
+    <img width="100px" src="{{new.src}}">
+    <h3>{{new?.disc}}</h3>
+  <a routerLink="news/{{new?.id}}">Продолжение...</a>
+  </div>
+</div>

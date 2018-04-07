@@ -1,0 +1,22 @@
+{
+  "newList": [
+    {
+      "id": 0,
+      "disc": "1",
+      "fullDisc": "Полный 1",
+      "src": "http://market.umh.ua/upload/images-cache/items/3463/gallery-0x454-9991219147eac9665565fbd4e14de25d.jpg?1498313612"
+    },
+    {
+      "id": 1,
+      "disc": "2",
+      "fullDisc": "Полный 2",
+      "src": "http://market.umh.ua/upload/images-cache/items/3463/gallery-0x454-9991219147eac9665565fbd4e14de25d.jpg?1498313612"
+    },
+    {
+      "id": 2,
+      "disc": "3",
+      "fullDisc": "Полный 3",
+      "src": "http://market.umh.ua/upload/images-cache/items/3463/gallery-0x454-9991219147eac9665565fbd4e14de25d.jpg?1498313612"
+    }
+  ]
+}

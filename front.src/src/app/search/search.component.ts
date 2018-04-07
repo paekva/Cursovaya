@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchRequest } from './search.model';
 import { FormControl, FormBuilder } from '@angular/forms';
+import { ZooService } from '../services/services';
+
 
 @Component({
   selector: 'app-search',
@@ -16,23 +18,18 @@ export class SearchComponent implements OnInit {
     {value: '3', display: 'answer 3'}
   ];
 
-  public zoos = [
-    { value: '1801', display: 'Омский национальнй зоопарк' },
-    { value: '200', display: 'Московский зоопарк' }
-  ];
-
+  public zoos=[];
+  public errorMsg;
   public subjects = [
     { value: '1', display: 'Животные' },
     { value: '2', display: 'Мероприятия' },
     { value: '3', display: 'Упоминания о зоопарке' }
   ];
-  public types = [
-    {value: '0', display: 'Выберите предмет поиска'}
-  ];
+  public types;
 
   private searchForm;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private _zooService: ZooService) {
     this.searchForm = this.fb.group({
       subject: '',
       type: '',
@@ -49,45 +46,36 @@ export class SearchComponent implements OnInit {
   onSubjectChange(subject)
   {
    if (subject==1) {
-    this.types = [
-      { value: '1', display: 'Млекопитающие' },
-      { value: '2', display: 'Земноводные' },
-      { value: '3', display: 'Присмыкающиеся' }
-    ];
-   } else if(subject==2){
-    this.types = [
-      { value: '1', display: 'Ночь в зоопарке' },
-      { value: '2', display: 'Бесплатная экскурсия' },
-      { value: '3', display: 'Открытый вольер' }
-    ];
-   }else{
-    this.types = [
-      { value: '1', display: 'Книга' },
-      { value: '2', display: 'Статья' },
-      { value: '3', display: 'Интернет-блог' }
-    ];
+    this._zooService.getAnimalTypes()
+      .subscribe(data => this.types = data,
+                error => this.errorMsg = error);
+   } 
+   else if(subject==2){
+    this._zooService.getEventTypes()
+      .subscribe(data => this.types = data,
+                error => this.errorMsg = error);
+   }
+   else{
+    this._zooService.getMentionTypes()
+      .subscribe(data => this.types = data,
+                error => this.errorMsg = error);
    }
     this.model.subject = subject;    
   }
   
 
-  onTypeChange(type)
-  {
-    this.model.type = type;
-  }
-
-  onZooChange(zoo)
-  {
-    this.model.zoo = zoo;
-  }
+  onTypeChange(type) { this.model.type = type;}
+  onZooChange(zoo) { this.model.zoo = zoo; }
 
   onSubmit()
   {
   }
 
   ngOnInit() {
-    
-  }
+    this._zooService.getZoos()
+      .subscribe(data => this.zoos = data,
+                error => this.errorMsg = error);
+}
 
   get currentSearchRequest() { return JSON.stringify(this.model); }
 

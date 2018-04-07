@@ -1,3 +1,32 @@
-<p>
-  admin-tickets works!
-</p>
+<!-- <h2>Поиск нужных билетов (в .ts поменять модель объекта отправки на сервер)</h2>
+<div>
+  <label> Тип билета </label>
+  <select class="form-control dropdowns" formControlName="type" (change) = onTypeChange($event.target.value)>
+      <option *ngFor="let type of types" [value]="type.value">  
+          {{type.display}}
+      </option>
+  </select>
+</div>
+
+<div>
+  <label> Зоопарки </label>
+  <select class="form-control dropdowns" formControlName="zoo" (change) = onZooChange($event.target.value)>
+      <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+          {{zoo.name}}
+      </option>
+  </select>
+
+  <label> Дата </label>
+  <input class="input-group" type="date" formControlName="date" />
+  <br>
+  <button type="submit" class="btn btn-success" >Найти</button> 
+</div> -->
+
+<label> Билеты </label>
+  <ul>
+      <li *ngFor="let t of result" [value]="t.id">  
+          <p>Зоопарк: {{t.zoo}}</p>
+          <p>Дата: {{t.date}}</p>
+      </li>
+</ul>
+    

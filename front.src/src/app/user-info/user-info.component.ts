@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserLogin } from './user.login'
+import { IFullUser } from '../services/entites';
+
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
@@ -7,17 +8,19 @@ import { UserLogin } from './user.login'
 })
 export class UserInfoComponent implements OnInit {
 
-  account = new UserLogin('kate','back','Pavlova Kate','paekva@yandex.ru','20 y.o from Spb with love');
+  account: IFullUser = null;
   private newP ='';
   private oldP ='';
   private name ='';
   private email = '';
   private info = '';
   show: boolean = true;
+  succes: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
+    
   }
 
   oldPassword(password)  { this.oldP = password; }
@@ -37,6 +40,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   changePassword(){
+    this.succes=false;
     if(this.oldP != this.account.password) 
     {
       this.show = false
@@ -45,10 +49,6 @@ export class UserInfoComponent implements OnInit {
     else this.show = true;
     //А здесь отправка в бд
     this.account.password = this.newP;
+    this.succes = true;
   }
-
-  get getName() { return JSON.stringify(this.account.name); }
-  get getEmail() { return JSON.stringify(this.account.email); }
-  get getInfo() { return JSON.stringify(this.account.info); }
-  get getLogin() { return JSON.stringify(this.account.login); }
 }

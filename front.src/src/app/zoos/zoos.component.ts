@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ZooService } from '../services/services';
+import { IZoo } from '../services/entites';
 
 @Component({
   selector: 'app-zoos',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ZoosComponent implements OnInit {
 
-  constructor() { }
+  errorMsg='';
+  constructor(private _zooService: ZooService) { }
+  zoos=[];
+  zooId: IZoo = null;
 
-  ngOnInit() {
+  onClick(id)
+  {
+    this._zooService.getZooById(id)
+      .subscribe(data => this.zooId = data,
+                error => this.errorMsg = error);
   }
 
+  ngOnInit() {
+    this._zooService.getZoos()
+      .subscribe(data => this.zoos = data,
+                error => this.errorMsg = error);
+}
 }

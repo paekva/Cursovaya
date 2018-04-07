@@ -13,8 +13,8 @@
 
         <label> Тип </label>
         <select class="form-control dropdowns" formControlName="type" (change) = onTypeChange($event.target.value)>
-            <option *ngFor="let type of types" [value]="type.value">  
-                {{type.display}}
+            <option *ngFor="let type of types" [value]="type.id">  
+                {{type.name}}
             </option>
         </select>
     </div>
@@ -22,8 +22,8 @@
     <div>
         <label> Зоопарки </label>
         <select class="form-control dropdowns" formControlName="zoo" (change) = onZooChange($event.target.value)>
-            <option *ngFor="let zoo of zoos" [value]="zoo.value">  
-                {{zoo.display}}
+            <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+                {{zoo.name}}
             </option>
         </select>
 
@@ -31,7 +31,7 @@
         <input class="input-group" type="date" formControlName="date" />
 
     </div>
-    <br/>
+    <br>
     <button type="submit" class="btn btn-success" >Найти</button> 
   </form>
   <div>

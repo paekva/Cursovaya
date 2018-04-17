@@ -1,10 +1,12 @@
 package ru.iad.restful.admin;
 /*READY, NOT TESTED*/
 import ru.iad.dao.Insert;
+import ru.iad.entities.News;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.Date;
 
 @Path("/admin/add")
@@ -15,11 +17,13 @@ public class AddInfoService {
     private Insert insert;
 
     @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_PLAIN})
     @Path("/news")
-    public void addNews
-            (@FormParam("header") String header, @FormParam("content") String content)  {
-        insert.newsInsert(header,content, new Date());
+    public void addNews(News news)  {
+        insert.newsInsert(news.getHeader(),news.getContent(), new Date());
     }
+
 
     @POST
     @Path("/animal")

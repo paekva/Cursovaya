@@ -19,9 +19,9 @@ public class ChangeInfoService {
     }
 
     @POST
-    @Path("/zoo/{header}/{content}")
-    public void changeZoo(@FormParam("name") String name, @FormParam("director") String director,
+    @Path("/zoo")
+    public void changeZoo(@FormParam("name") String name, @FormParam("manager") String manager,
                           @FormParam("functionality") String functionality){
-        update.zooUpdate(name,director,functionality);
+        update.zooUpdate(name,manager,functionality);
     }
 }

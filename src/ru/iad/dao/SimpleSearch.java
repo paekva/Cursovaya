@@ -15,6 +15,7 @@ public class SimpleSearch {
 
     //________# 1 ________________
 
+
     /**
      * Функция поиска записи в таблице
      * @see Animals по имени
@@ -111,6 +112,28 @@ public class SimpleSearch {
         return null;
     }
 
+
+    /**
+     * Функция поиска записи в таблице
+     * @see AnimalType
+     * @return Возвращает лист зоопарков
+     */
+    public List<AnimalType> searchAllAnimalTypes()
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from AnimalType as m");
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     //________# 2 ________________
@@ -211,6 +234,27 @@ public class SimpleSearch {
         return null;
     }
 
+    /**
+     * Функция поиска записи в таблице
+     * @see MentionType
+     * @return Возвращает лист зоопарков
+     */
+    public List<MentionType> searchAllMentionTypes()
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from MentionType as m");
+                return query.getResultList();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     //________# 4 ________________
     /**
@@ -299,6 +343,28 @@ public class SimpleSearch {
                 Query query = em.createQuery("SELECT m from EventType as m WHERE m.названиеТипаМероприятия=:paramName");
                 query.setParameter("paramName", name);
                 return (EventType) query.getResultList().get(0);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Функция поиска записи в таблице
+     * @see EventType
+     * @return Возвращает лист зоопарков
+     */
+    public List<EventType> searchAllEventTypes()
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from EventType as m");
+                return query.getResultList();
             }
         }
         catch(Exception e)
@@ -439,7 +505,7 @@ public class SimpleSearch {
      * @see Employees по имени
      * @return Возвращает лист сотрудников, записанных под данным именем
      */
-    public List<Employees> searchEmployeeByName(  String name)
+    public Employees searchEmployeeByName(String name)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -447,7 +513,7 @@ public class SimpleSearch {
             if (em != null) {
                 Query query = em.createQuery("SELECT m from Employees as m WHERE m.фио=:paramName");
                 query.setParameter("paramName", name);
-                return query.getResultList();
+                return (Employees)query.getSingleResult();
             }
         }
         catch(Exception e)
@@ -676,6 +742,30 @@ public class SimpleSearch {
         return null;
     }
 
+
+    /**
+     * Функция поиска записи в таблице
+     * @see Places по
+     * @see Animals
+     * @return Возвращает лист площадок, записанных под данным именем
+     */
+    public Places searchPlaceByAnimal(Animals animal)
+    {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
+            EntityManager em = emf.createEntityManager();
+            if (em != null) {
+                Query query = em.createQuery("SELECT m from Places as m WHERE m.idЖивотного=:paramName");
+                query.setParameter("paramName", animal.getIdЖивотного());
+                return (Places)query.getSingleResult();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Функция поиска пользователя

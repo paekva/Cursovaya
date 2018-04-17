@@ -204,8 +204,8 @@ public class ComplexSearch {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                List<Employees> result = ss.searchEmployeeByName(name);
-                int id = result.get(0).getIdСотрудника();
+                Employees result = ss.searchEmployeeByName(name);
+                int id = result.getIdСотрудника();
 
                 Query query = em.createQuery("SELECT m from Activity as m where m.idСотрудника = :paramName");
                 query.setParameter("paramName", id);

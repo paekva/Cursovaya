@@ -8,6 +8,7 @@ import ru.iad.supplies.EmailSender;
 
 import javax.ejb.*;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.text.DateFormat;
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     @GET
     @Path("/tickets/{id}")
-    public String allUserTickets(@PathParam("id") Integer id){
+    public Response allUserTickets(@PathParam("id") Integer id){
         Gson gson = new Gson();
         List<ResponseTickets> ResponseTickets = new ArrayList<ResponseTickets>();
 
@@ -34,36 +35,47 @@ public class UserService {
                     tt.getНазваниеКатегории());
             ResponseTickets.add(rt);
         }
-
-        return gson.toJson(ResponseTickets);
+        return Response.status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity(gson.toJson(ResponseTickets))
+                .build();
     }
 
     @GET
     @Path("/info/{id}")
-    public String userInfo(@PathParam("id") Integer id){
+    public Response userInfo(@PathParam("id") Integer id){
         Gson gson = new Gson();
         User usr = ss.searchUserById(id);
         ResponseUser user = new ResponseUser(usr.getId(),usr.getUsername(), usr.getName(),
-                usr.getEmail(),usr.getInfo());
-        return gson.toJson(user);
+                usr.getEmail(),usr.getInfo(),usr.getRole());
+        return Response.status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity(gson.toJson(user))
+                .build();
     }
-
 
     @POST
     @Path("/rential}")
-    public String applayForRential(@FormParam("email") String email, @FormParam("fio") String fio, @FormParam("animal") String animal,
-                                   @FormParam("purpose") String purpose, @FormParam("organisation") String organisation,
-                                   @FormParam("dateFrom") String dateFrom, @FormParam("dateTo") String dateTo){
+    public Response create(ResponseAR ar) {
         Date curTime = new Date();
         DateFormat format = DateFormat.getDateInstance();
         String header = "Заявка на прокат животного. " + format.format(curTime);
-        String content = "Заявка на прокат животного " + animal +" \n ОТ: " + fio + " \n ОРГАНИЗАЦИЯ: " + organisation
-                + " \n ДАТЫ: " + dateFrom + " - " + dateTo + "\n ЦЕЛЬ: " + purpose + "\n КОНТАКТНЫЙ EMAIL: " + email;
+        String content = "Заявка на прокат животного " + ar.getAnimal() +" \n ОТ: " + ar.getFio()
+                + " \n ОРГАНИЗАЦИЯ: " + ar.getOrganisation() + " \n ДАТЫ: " + ar.getDateFrom()
+                + " - " + ar.getDateTo() + "\n ЦЕЛЬ: " + ar.getPurpose() + "\n КОНТАКТНЫЙ EMAIL: " + ar.getEmail();
 
         EmailSender es = new EmailSender("katrinpayvl@gmail.com", "rfnz89grf");
         es.send(header, content, "katrinpayvl@gmail.com", "paekva@yandex.ru");
 
-        return "succes";
+        return Response.ok().build();
     }
 }
 

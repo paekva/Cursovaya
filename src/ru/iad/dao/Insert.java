@@ -118,9 +118,9 @@ public class Insert {
             if(activityKindItem==null) throw new Exception();
             int idKindOfActivity = activityKindItem.getIdТипаДеятельности();
 
-            List <Employees> employeeItem = ss.searchEmployeeByName(employee);
-            if(employeeItem.size()==0) throw new Exception();
-            int idEmployee = employeeItem.get(0).getIdСотрудника();
+            Employees employeeItem = ss.searchEmployeeByName(employee);
+            if(employeeItem==null) throw new Exception();
+            int idEmployee = employeeItem.getIdСотрудника();
 
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
@@ -184,9 +184,9 @@ public class Insert {
             if(mentioningItem==null) throw new Exception();
             int idKindOfMentioning = mentioningItem.getIdВидаУпоминания();
 
-            List<Employees> employeeItem = ss.searchEmployeeByName(employee);
+            Employees employeeItem = ss.searchEmployeeByName(employee);
             int idEmployee = 0;
-            if(employeeItem.size()!=0)idEmployee = employeeItem.get(0).getIdСотрудника();
+            if(employeeItem!=null)idEmployee = employeeItem.getIdСотрудника();
 
             Zoo zooItem= ss.searchZooByName(zoo);
             int idZoo = 0;
@@ -222,9 +222,9 @@ public class Insert {
     public void eventInsert( String name, String zoo, String kind, String employee, Date date, Double duration, Double cost)
     {
         try {
-            List <Employees> employeeItem = ss.searchEmployeeByName(employee);
-            if(employeeItem.size()==0) throw new Exception();
-            int idEmployee = employeeItem.get(0).getIdСотрудника();
+            Employees employeeItem = ss.searchEmployeeByName(employee);
+            if(employeeItem==null) throw new Exception();
+            int idEmployee = employeeItem.getIdСотрудника();
 
             Zoo zooItem= ss.searchZooByName(zoo);
             if(zooItem == null) throw new Exception();
@@ -262,9 +262,9 @@ public class Insert {
     public void ticketInsert( String zoo, String employee, Date date, String category)
     {
         try {
-            List <Employees> employeeItem = ss.searchEmployeeByName(employee);
-            if(employeeItem.size()==0) throw new Exception();
-            int idEmployee = employeeItem.get(0).getIdСотрудника();
+            Employees employeeItem = ss.searchEmployeeByName(employee);
+            if(employeeItem==null) throw new Exception();
+            int idEmployee = employeeItem.getIdСотрудника();
 
             Zoo zooItem= ss.searchZooByName(zoo);
             if(zooItem == null) throw new Exception();

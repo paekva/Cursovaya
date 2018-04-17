@@ -1,18 +1,16 @@
-<h2>Зоопарки</h2>
 <div>
-  <select class="form-control dropdowns" (change) = onClick($event.target.value)>
-      <option *ngFor="let zoo of zoos" [value]="zoo.id">  
-          {{zoo.name}}
-      </option>
-  </select>
+  <select class="form-control dropdowns" (change) = onZooChange($event.target.value)>
+            <option *ngFor="let zoo of zoos" [value]="zoo.id">
+                {{zoo.name}}
+            </option>
+        </select>
 </div>
-<div>
-  <h4>Инфомация о зоопарке</h4>
-  <p><b>Название:  </b> <i>{{zooId.name}}</i> </p>
-  <p><b>Местоположение:  </b> <i>{{zooId.place}}</i> </p>
-  <p><b>Дата открытия:  </b> <i>{{zooId.date}}</i> </p>
-  <p><b>Управляющий:  </b> <i>{{zooId.manager}}</i> </p>
-  <p><b>Статус:  </b> <i>{{zooId.func}}</i> </p>
-  <p><b>Число животных:  </b> <i>{{zooId.animals}}</i> </p>
-  <p><b>Число сотрудников:  </b> <i>{{zooId.employees}}</i> </p>
-</div> 
+
+<h2>Подробнее о зоопарке</h2>
+<p><b>Название зоопарка:</b> <i>{{zooId.name}}</i></p>
+<p><b>Местоположение:</b> <i>{{zooId.place}}</i></p>
+<p><b>Директор зопарка:</b> <i>{{zooId.manager}}</i></p>
+<p><b>Дата открытия:</b> <i>{{zooId.date}}</i></p>
+<p><b>Количество животных:</b> <i>{{zooId.animals}}</i></p>
+<p><b>Количество сотрудников:</b> <i>{{zooId.employees}}</i></p>
+{{errorMsg}}

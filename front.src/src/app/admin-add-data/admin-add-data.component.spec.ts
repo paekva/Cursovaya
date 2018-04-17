@@ -10,7 +10,7 @@ describe('AdminAddDataComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AdminAddDataComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

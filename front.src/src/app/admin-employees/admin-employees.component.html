@@ -3,17 +3,19 @@
 <div>
   <label> Зоопарки </label>
   <select class="form-control dropdowns" formControlName="zoo" (change)=onZooChange($event.target.value)>
-      <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+      <option *ngFor="let zoo of zoos" [value]="zoo.id">
           {{zoo.name}}
       </option>
   </select> <br>
-  <button type="submit" class="btn btn-success" (click) = onZooSubmit()>Найти</button> 
+  <!--<button type="submit" class="btn btn-success" (click) = onZooSubmit()>Найти</button>-->
 
   <h3>или</h3>
   <label>Поиск по фио</label>
   <input type="text" [(ngModel)]="name" />
 
-  <button type="submit" class="btn btn-success" (click) = onNameSubmit()>Найти</button> 
+  <button type="submit" class="btn btn-success" (click) = onNameSubmit()>Найти</button>
 </div>
 
 <h4>Результаты поиска:</h4>
+
+{{employee}}

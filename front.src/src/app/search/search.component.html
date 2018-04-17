@@ -1,19 +1,19 @@
 <div>
   <h1>Параметры поиска:</h1>
 
-  <form [formGroup]="searchForm" novalidate>
-    
+  <form [formGroup]="searchForm" (submit) = onSubmit() novalidate>
+
      <div>
        <label> Предмет поиска </label>
         <select class="form-control dropdowns" formControlName="subject" (change) = onSubjectChange($event.target.value)>
-            <option *ngFor="let subject of subjects" [value]="subject.value">  
+            <option *ngFor="let subject of subjects" [value]="subject.value">
                 {{subject.display}}
             </option>
         </select>
 
         <label> Тип </label>
         <select class="form-control dropdowns" formControlName="type" (change) = onTypeChange($event.target.value)>
-            <option *ngFor="let type of types" [value]="type.id">  
+            <option *ngFor="let type of types" [value]="type.id">
                 {{type.name}}
             </option>
         </select>
@@ -22,7 +22,7 @@
     <div>
         <label> Зоопарки </label>
         <select class="form-control dropdowns" formControlName="zoo" (change) = onZooChange($event.target.value)>
-            <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+            <option *ngFor="let zoo of zoos" [value]="zoo.id">
                 {{zoo.name}}
             </option>
         </select>
@@ -32,17 +32,18 @@
 
     </div>
     <br>
-    <button type="submit" class="btn btn-success" >Найти</button> 
+    <button type="submit" class="btn btn-success" >Найти</button>
   </form>
-  <div>
-      <label>Результаты поиска</label>
-    <ul class="list-group" formControlName="data">
-            <li class="list-group-item list-group-item-action" *ngFor="let dat of d" [value]="d.value">  
-            {{d.display}}
-            </li>
-    </ul>
 </div>
 
-  <h2>Model:</h2>
-    {{ currentSearchRequest }}
+<div>
+    <label>Результаты поиска</label>
+
+    <ul>
+        <li *ngFor="let r of results" [value]="r.id">
+            <a *ngIf="mode==1" routerLink="/oneAnimal/{{r?.id}}">{{r.name}} </a>
+            <a *ngIf="mode==2" routerLink="/oneEvent/{{r?.id}}">{{r.name}} </a>
+            <a *ngIf="mode==3" routerLink="/oneMention/{{r?.id}}">{{r.name}}</a>
+        </li>
+    </ul>
 </div>

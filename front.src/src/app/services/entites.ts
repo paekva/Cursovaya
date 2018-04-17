@@ -5,11 +5,13 @@ export interface IZoos {
 }
 
 export interface IFullUser{
+    id: number,
     login: string,
     password: string,
     name?: string,
     email?: string,
-    info?: string
+    info?: string,
+    role: string
 }
 
 export interface IZoo {
@@ -30,6 +32,15 @@ export interface IAnimal {
     type: string
 }
 
+export interface IEvent {
+    name: string,
+    type: string,
+    ticketCost: number,
+    date: Date,
+    worker: string,
+    zoo: string
+}
+
 export interface IType {
     id: number,
     name: string
@@ -47,10 +58,24 @@ export interface ITickets {
     date: Date
 }
 
-export class News {
+export interface News {
     id: number;
-    disc: string;
-    fullDisc: string;
-    src: string;
-  }
-  
+    header: string;
+    date: Date;
+    content: string;
+}
+
+
+export class Resp {
+  role: string;
+}
+
+export class RentialModel {
+    name: string;
+    email: string;
+    zoo: string;
+    animal: string;
+    purpose: string;
+    dateTake: Date;
+    dateReturn: Date;
+}

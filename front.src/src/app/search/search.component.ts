@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchRequest } from './search.model';
-import { FormControl, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ZooService } from '../services/services';
 
 
@@ -12,12 +12,9 @@ import { ZooService } from '../services/services';
 
 export class SearchComponent implements OnInit {
 
-  public d =[
-    {value: '1', display: 'answer 1'},
-    {value: '2', display: 'answer 2'},
-    {value: '3', display: 'answer 3'}
-  ];
+  public results = [];
 
+  public mode = 0;
   public zoos=[];
   public errorMsg;
   public subjects = [
@@ -42,33 +39,41 @@ export class SearchComponent implements OnInit {
 
 
   model = new SearchRequest(' ', '', '');
-  
+
   onSubjectChange(subject)
   {
    if (subject==1) {
+    this.mode= 1;
     this._zooService.getAnimalTypes()
       .subscribe(data => this.types = data,
                 error => this.errorMsg = error);
-   } 
+   }
    else if(subject==2){
+    this.mode= 2;
     this._zooService.getEventTypes()
       .subscribe(data => this.types = data,
                 error => this.errorMsg = error);
    }
    else{
+    this.mode= 3;
     this._zooService.getMentionTypes()
       .subscribe(data => this.types = data,
                 error => this.errorMsg = error);
    }
-    this.model.subject = subject;    
+    this.model.subject = subject;
   }
-  
+
 
   onTypeChange(type) { this.model.type = type;}
   onZooChange(zoo) { this.model.zoo = zoo; }
 
   onSubmit()
   {
+    //Тут зделать пост запрос
+    // if mode ==1 и тд
+    this._zooService.getEventTypes()
+      .subscribe(data => this.results = data,
+                error => this.errorMsg = error);
   }
 
   ngOnInit() {

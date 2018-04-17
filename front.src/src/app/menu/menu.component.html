@@ -1,10 +1,10 @@
 <div>
   <ul id="nav">
     <li>
-      <a routerLink="" title="Вернуться на главную страницу">Главная</a>
+      <a routerLink="/" title="Вернуться на главную страницу">Главная</a>
     </li>
-    <app-user ></app-user>
-    <app-admin></app-admin>
+    <app-user *ngIf="role=='USER'"></app-user>
+    <app-admin *ngIf="role=='ADMIN'"></app-admin>
     <li>
       <a routerLink="/zoos" title="Список зоопарков">Зоопарки</a>
     </li>

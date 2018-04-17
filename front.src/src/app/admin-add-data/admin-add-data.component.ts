@@ -15,7 +15,7 @@ export class AdminAddDataComponent implements OnInit {
     {value: '3', display: 'Мероприятия'},
   ]
 
-  
+
   public zoos=[];
   public animals = [];
   public employees = [];
@@ -61,13 +61,13 @@ export class AdminAddDataComponent implements OnInit {
 
   formChange(val)
   {
-    if(val==2) 
+    if(val==2)
     {
       this.showPlace = true;
       this.showEvent = false;
       this.showZoo = false;
     }
-    if(val==3) 
+    if(val==3)
     {
       this.showEvent = true;
       this.showZoo = false;
@@ -86,7 +86,7 @@ export class AdminAddDataComponent implements OnInit {
     this._zooService.getAnimalsByZoo(value)
       .subscribe(data => this.animals = data,
                 error => this.errorMsg = error);
-                
+
     this._zooService.getEmployeesByZoo(value)
       .subscribe(data => this.employees = data,
                 error => this.errorMsg = error);

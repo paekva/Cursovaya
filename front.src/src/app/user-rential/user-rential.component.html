@@ -2,37 +2,39 @@
 
 <div>
   <form>
-      <div>
-          <label> Выберите зоопарк </label>
-          <select class="form-control form" formControlName="zoo" (change) = onZooChange($event.target.value)>
-              <option *ngFor="let zoo of zoos" [value]="zoo.id">  
-                  {{zoo.name}}
-              </option>
-          </select>
-  
-          <label> Выберите животное </label>
-          <select class="form-control form" formControlName="animal" (change) = onAnimalChange($event.target.value)>
-              <option *ngFor="let animal of animals" [value]="animal.value">  
-                  {{animal.display}}
-              </option>
-          </select>
+    <div>
+      <label> Выберите зоопарк </label>
+      <select formControlName="zoo" class="form-control dropdowns" [(ngModel)]="request.zoo"
+              (change) = onZooChange($event.target.value)>
+            <option *ngFor="let zoo of zoos" [value]="zoo.id">
+                {{zoo.name}}
+            </option>
+        </select>
 
-          <label>ФИО</label>
-          <input class="form-control form " type="text" formControlName="name" [(ngModel)]="name"/>
+      <label> Выберите животное </label>
+      <select class="form-control form" formControlName="animal"  [(ngModel)]="request.animal">
+        <option *ngFor="let animal of animals" [value]="animal.value">
+          {{animal.display}}
+        </option>
+      </select>
 
-          <label>Цель</label>
-          <input class="form-control form" type="text" formControlName="purpose" [(ngModel)]="purpose"/>
+      <label>ФИО</label>
+      <input class="form-control form " type="text" formControlName="name" [(ngModel)]="request.name">
 
-          <label>Email адрес для связи с представителем зоопарка</label>
-          <input class="form-control form" type="text" formControlName="email" [(ngModel)]="email" />
+      <label>Цель</label>
+      <input class="form-control form" type="text" formControlName="purpose"  [(ngModel)]="request.purpose">
 
-          <label>Дата взятия</label>
-          <input class="form-control form" type="date" formControlName="dateTake" [(ngModel)]="dateTake" />
+      <label>Email адрес для связи с представителем зоопарка</label>
+      <input class="form-control form" type="text" formControlName="email"  [(ngModel)]="request.email">
 
-          <label>Дата возврата</label>
-          <input class="form-control form" type="date" formControlName="dateReturn" [(ngModel)]="dateReturn"/>
-      </div>
-      <br><button (click) = sendRequest() class="btn btn-success" type="submit">Отправить заявку</button>
+      <label>Дата взятия</label>
+      <input class="form-control form" type="date" formControlName="dateTake"  [(ngModel)]="request.dateTake">
+
+      <label>Дата возврата</label>
+      <input class="form-control form" type="date" formControlName="dateReturn"  [(ngModel)]="request.dateReturn">
+    </div>
+    <br>
+    <button (click)=sendRequest() class="btn btn-success" type="submit">Отправить заявку</button>
   </form>
 
 </div>

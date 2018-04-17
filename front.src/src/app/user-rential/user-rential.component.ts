@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder } from '@angular/forms';
-import { RentialModel } from './rential.model';
-import { ZooService } from '../services/services';
-import { AnimalService } from '../services/animal.service';
+import { FormBuilder } from '@angular/forms';
+import { RentialModel } from '../services/entites';
+import { ZooService } from '../services/services'
 
 @Component({
   selector: 'app-user-rential',
@@ -15,9 +14,9 @@ export class UserRentialComponent implements OnInit {
   public errorMsg;
   public zoos = [];
 
-  public animals;
-  request = new RentialModel('','','','','',null,null);
-  
+  public animals=[];
+  request: RentialModel;
+
 
   constructor(private fb: FormBuilder, private _zooService: ZooService) {
     this.rentialForm = this.fb.group({
@@ -31,19 +30,15 @@ export class UserRentialComponent implements OnInit {
     });
   }
 
-  onZooChange(zoo)
-  {
+  onZooChange(zoo) {
     this._zooService.getAnimalsByZoo(zoo)
       .subscribe(data => this.animals = data,
-                  error => this.errorMsg = error);
-    this.request.zoo = zoo;    
+        error => this.errorMsg = error);
   }
-
-  onAnimalChange(animal) { this.request.animal = animal; }
 
   sendRequest()
   {
-    //send
+    this._zooService.postRential(this.request);
   }
 
   ngOnInit() {

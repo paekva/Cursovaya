@@ -1,5 +1,4 @@
-export class SearchRequest
-{
+export class SearchRequest {
     constructor(
       public subject: string,
       public zoo?: string,

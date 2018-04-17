@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-menu',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  role: string;
+  constructor( private cookie: CookieService) {}
 
   ngOnInit() {
+    this.role = this.cookie.get('role');
   }
 
 }

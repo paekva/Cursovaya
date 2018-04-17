@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ZooService } from '../services/services';
 
 @Component({
@@ -10,6 +10,7 @@ import { ZooService } from '../services/services';
 export class AdminEmployeesComponent implements OnInit {
 
   public zoos=[];
+  public employee;
   choosedZoo: string = "";
   name: string ="";
 
@@ -27,22 +28,22 @@ export class AdminEmployeesComponent implements OnInit {
   ngOnInit() {
     this._zooService.getZoos()
       .subscribe(data => this.zoos = data,
-                error => this.errorMsg = error); 
+                error => this.errorMsg = error);
               }
 
   onZooChange(zoo) { this.choosedZoo = zoo; }
-  
+
   /*
   onZooSubmit(){
     //search for emloyess, who work in zoo with id this.choosedZoo
     this._employeeService.getEmployeesByZoo(this.choosedZoo)
       .subscribe(data => this.zoos = data,
                 error => this.errorMsg = error);
-  }
+  }*/
   onNameSubmit() {
     //search for employee, called this.name
-    this._employeeService.getEmployeesByName(this.name)
-      .subscribe(data => this.zoos = data,
+    this._zooService.getEmployeeByName(this.name)
+      .subscribe(data => this.employee = data,
                 error => this.errorMsg = error);
-  }*/
+  }
 }

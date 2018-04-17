@@ -1,0 +1,7 @@
+<div style="width: 100%" *ngFor="let new of news">
+  <div *ngIf="new.id == ids" style="text-align: center">
+    <h1>{{new.header}}</h1>
+    <p><i>{{new.date}}</i></p>
+    <h5>{{new.content}}</h5>
+  </div>
+</div>

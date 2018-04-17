@@ -1,0 +1,14 @@
+<form (ngSubmit) = onSubmit() >
+  <img src="../../assets/logo.png" width="50%" class="img-responsive" alt="Логотип"/>
+  <h3>Войти</h3>
+  <div *ngIf="errorMsg" class="alert alert-danger">Данные входа не верны. Попробуйте снова или зарегестрируйтесь</div>
+  <input type="text" name="login" placeholder="Ваш логин" required class="form-control input-lg" [(ngModel)]="login"/>
+  <input type="password" class="form-control input-lg" id="password" placeholder="Пароль" [(ngModel)]="password" required=""/>
+  <button type="submit" name="go" class="btn btn-lg btn-success btn-block">Войти</button>
+  <div>
+    <a routerLink="/registration">Зарегестрироваться</a>
+  </div>
+</form>
+
+{{login}}
+{{password}}

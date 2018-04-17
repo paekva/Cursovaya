@@ -1,6 +1,5 @@
-<div>
-  <a class="navbar-brand" href=""><img src="../../assets/logo.png" width="150"/></a>
-</div>
-<div class="login">
-  <a href="#"><span class="glyphicon glyphicon-log-in"></span> Войти</a>
-</div>
+<header>
+  <div><img src="../../assets/logo.png" alt="На главную" routerLink="/"></div>
+  <div *ngIf ="!role" align="right"><span class="glyphicon glyphicon-log-in" routerLink="login"> Войти</span></div>
+  <div *ngIf ="role" align="right"><span class="glyphicon glyphicon-log-in" routerLink="logout"> Выйти</span></div>
+</header>

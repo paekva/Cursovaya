@@ -1,16 +1,15 @@
 <div>
     <h1>Изменить данные таблиц в базе данных</h1>
-  
+
     <div>
         <label>Записи таблицы под названием:</label>
          <select class="form-control dropdowns" (change) = formChange($event.target.value)>
-             <option *ngFor="let table of tables" [value]="table.value">  
+             <option *ngFor="let table of tables" [value]="table.value">
                  {{table.display}}
              </option>
          </select>
     </div>
 
-    <!-- Здесь будут динамически еще появляться компоненты для добавления данных в бд -->
     <br><br>
     <div>
         <label>Введите данные</label>
@@ -21,35 +20,32 @@
             <div>
                 <label>Название</label>
                 <select class="form-control dropdowns" formControlName="zoo" (change) = onZooChange($event.target.value)>
-                    <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+                    <option *ngFor="let zoo of zoos" [value]="zoo.id">
                         {{zoo.name}}
                     </option>
                 </select>
 
                 <label>Статус</label>
-                <input class="form-control form " type="text" formControlName="functionality" [(ngModel)]="functionality"/>
-      
+                <input class="form-control form " type="text" formControlName="functionality" [(ngModel)]="zoo.func"/>
+
                 <label>ФИО управляющего</label>
-                <input class="form-control form " type="text" formControlName="manager" [(ngModel)]="manager"/>
+                <input class="form-control form " type="text" formControlName="manager" [(ngModel)]="zoo.manager"/>
           </div>
             <br><button class="btn btn-success" type="submit">Добавить изменения</button>
     </form>
 
-    <form formControlName="animalForm" *ngIf="showAnimal" (submit) = sendPlace() >
+    <form formControlName="animalForm" *ngIf="showAnimal" (submit) = sendAnimal() >
             <div>
-                <label>Название</label>
-                <input class="form-control form " type="text" formControlName="name" [(ngModel)]="name"/>
-      
                 <label>Местоположение(зоопарк)</label>
                 <select class="form-control dropdowns" formControlName="zoo" (change) = onZooChange($event.target.value)>
-                        <option *ngFor="let zoo of zoos" [value]="zoo.id">  
+                        <option *ngFor="let zoo of zoos" [value]="zoo.id">
                             {{zoo.name}}
                         </option>
                 </select>
 
                 <label>Животное</label>
                 <select class="form-control dropdowns" formControlName="animal">
-                        <option *ngFor="let a of animals" [value]="a.id">  
+                        <option *ngFor="let a of animals" [value]="a.id">
                             {{a.name}}
                         </option>
                 </select>
@@ -63,4 +59,5 @@
             <br><button class="btn btn-success" type="submit">Добавить изменения</button>
     </form>
 
+    {{errorMsg}}
 </div>

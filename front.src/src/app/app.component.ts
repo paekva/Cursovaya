@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import { IFullUser} from './services/entites';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+
+  constructor( private cookie: CookieService)
+  {
+    let myObj = {
+      login: '',
+      password: '',
+      name: '',
+      email: '',
+      info: ''
+    };
+    this.cookie.set('user',JSON.stringify(myObj));
+  }
 }

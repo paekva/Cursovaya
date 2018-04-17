@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ZooService } from '../services/services';
 
 @Component({
   selector: 'app-user-tickets',
@@ -8,14 +7,9 @@ import { ZooService } from '../services/services';
 })
 export class UserTicketsComponent implements OnInit {
 
-  constructor(public _zooService:ZooService) { }
+  constructor() { }
 
-  tickets = [];
-  errorMsg: string;
   ngOnInit() {
-    this._zooService.getTicketByUser(1)
-      .subscribe(data => this.tickets = data,
-                error => this.errorMsg = error);
-}
+  }
 
 }

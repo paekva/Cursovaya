@@ -1,4 +1,22 @@
-.login{
-    vertical-align: center;
-    align-self: left;
+header {
+  overflow: hidden;
+  vertical-align: top;
+  width: 100%;
+  padding: 0.3%;
+  background: #1bc342;
+  background: linear-gradient(to top, #1bc342, #18d769);
+  border-bottom: 1px solid green;
+}
+
+img {
+  height: 6vh;
+}
+
+div{
+  width: 48%;
+  display: inline-block;
+}
+
+span {
+  cursor: pointer;
 }

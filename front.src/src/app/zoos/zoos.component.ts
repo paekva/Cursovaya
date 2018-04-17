@@ -14,7 +14,7 @@ export class ZoosComponent implements OnInit {
   zoos=[];
   zooId: IZoo = null;
 
-  onClick(id)
+  onZooChange(id)
   {
     this._zooService.getZooById(id)
       .subscribe(data => this.zooId = data,

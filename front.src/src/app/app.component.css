@@ -1,56 +1,22 @@
-.header {
-    margin-bottom: 0;
-    border-radius: 0;
-    background: #1bc342;
-    background: linear-gradient(to top, #1bc342, #18d769);
-    border-bottom: 1px solid green;
-    height: 10vh;
-  }
-
-  footer {
-    background-color: #555;
-    color: white;
-    padding: 13px;
-  }
-  
-  .menu{
-    width: 150ch;
-    z-index: 1;
-    padding-left: 0ch;
-  }
-
-  #center{
-    padding-top: 20px;
-    height: 533px;
-    margin: 0;
-    padding: 0.5%;
-    display: block;
-    text-align: justify;
-    background-color: rgb(240, 240, 240);
-  }
-
+#center{
+  width: 100%;
+  margin: 0;
+  padding: 0.5%;
+  display: block;
+  text-align: justify;
+  background-color: rgb(240, 240, 240);
+}
+#content{
+  vertical-align: top;
+  width: 50%;
+  text-align: left;
+  background-color: #ffffff;
+  padding: 1%;
+  display: inline-block;
+}
+@media screen and (max-width: 767px) {
   #content{
-    vertical-align: top;
-    text-align: left;
-    background-color: #ffffff;
-    padding: 1%;
-    display: inline-block;
+    display: block;
+    width: 100%;
   }
-
-  #main{
-    padding-left: 15ch;
-  }
-  /* On small screens, set height to 'auto' for sidenav and grid */
-  @media screen and (max-width: 767px) {
-    #center {
-      height:auto;
-    } 
-
-    .header{
-        height: 12vh;
-    }
-
-    #main{
-      padding-left: 2ch;
-    }
-  }
+}

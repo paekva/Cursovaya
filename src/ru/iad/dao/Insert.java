@@ -497,7 +497,7 @@ public class Insert {
     /**
      * Добавление нового пользователя
      */
-    public int userInsert( String username, String password, String role)
+    public int userInsert( String username, String password, String role, String name, String email, String info)
     {
         try {
             String userRole;
@@ -511,9 +511,9 @@ public class Insert {
             newUser.setUsername(username);
             newUser.setPassword(password);
             newUser.setRole(userRole);
-            newUser.setInfo("");
-            newUser.setEmail("");
-            newUser.setName("");
+            newUser.setInfo(info);
+            newUser.setEmail(email);
+            newUser.setName(name);
 
             em.getTransaction().begin();
             em.persist(newUser);

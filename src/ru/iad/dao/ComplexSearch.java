@@ -85,75 +85,40 @@ public class ComplexSearch {
     /**
      * Функция поиска записи в таблице
      * @see Mentions
-     * по типу упоминаний
+     * по типу упоминания и зоопарку
      * @see MentionType
-     * @return Возвращает список всех упоминаний данного типа
-    **/
-    public List<Mentions> searchMentionsByType(String type)
-    {
-        try {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
-            EntityManager em = emf.createEntityManager();
-            if (em != null) {
-                MentionType result = ss.searchMentionTypeByName(type);
-                int id = result.getIdВидаУпоминания();
-                Query query = em.createQuery("SELECT m from Mentions as m where m.idВидаУпоминания = :paramName");
-                query.setParameter("paramName", id);
-                return query.getResultList();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    /**
-     * Функция поиска записи в таблице
-     * @see Mentions
-     * по зоопарку
+     * и
      * @see Zoo
-     * @return Возвращает список всех упоминаний, относящихся к данному зоопарку непосредственно
-    **/
-    public List<Mentions> searchMentionsByZoo(String zoo)
+     * @return Возвращает список подходящих упоминаний
+     **/
+    public List<Mentions> searchMention(Integer zooId,Integer typeId)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Zoo result = ss.searchZooByName(zoo);
-                int id = result.getIdЗоопарка();
-                Query query = em.createQuery("SELECT m from Mentions as m where m.idЗоопарка = :paramName");
-                query.setParameter("paramName", id);
-                return query.getResultList();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
+                Query query;
+                if(zooId==0)
+                {
+                    query = em.createQuery
+                            ("SELECT m from Mentions as m where m.idВидаУпоминания = :type");
 
-    /**
-     * Функция поиска записи в таблице
-     * @see Mentions
-     * по зоопарку
-     * @see Animals
-     * @return Возвращает список всех упоминаний, относящихся к данному животному непосредственно
-    **/
-    public List<Animals> searchMentioningByAnimal(String name)
-    {
-        try {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
-            EntityManager em = emf.createEntityManager();
-            if (em != null) {
-                List<Animals> result = ss.searchAnimalByName(name);
-                int id = result.get(0).getIdЖивотного();
-                Query query = em.createQuery("SELECT m from Mentions as m where m.idЖивотного = :paramName");
-                query.setParameter("paramName", id);
+                    query.setParameter("type", typeId);
+                }
+                else if(typeId==0)
+                {
+                    query = em.createQuery
+                            ("SELECT m from Mentions as m where m.idЗоопарка = :zoo");
+;
+                    query.setParameter("zoo", zooId);
+                }
+                else{
+                    query = em.createQuery
+                            ("SELECT m from Mentions as m where m.idВидаУпоминания = :type and m.idЗоопарка = :zoo");
+
+                    query.setParameter("type", typeId);
+                    query.setParameter("zoo", zooId);
+                }
                 return query.getResultList();
             }
         }
@@ -170,7 +135,7 @@ public class ComplexSearch {
      * @see Mentions
      * по дате
      * @return Возвращает список всех упоминаний до или после заданной даты
-**/
+     **/
     public List<Mentions> searchMentionsByDate(Date date, Boolean before)
     {
         try {
@@ -226,7 +191,7 @@ public class ComplexSearch {
      * @see Zoo
      * @return Возвращает список всех сотрудников данного зоопарка
      **/
-    public List<Employees> searchEmployeesByZoo(Integer zooId)
+    public List<Activity> searchEmployeesByZoo(Integer zooId)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
@@ -235,14 +200,15 @@ public class ComplexSearch {
                 Query query = em.createQuery("SELECT m from Activity as m where m.idЗоопарка = :paramName");
                 query.setParameter("paramName", zooId);
                 List<Activity> activities = query.getResultList();
-                List<Employees> employees=new ArrayList<>();
+                /*List<Employees> employees=new ArrayList<>();
                 for(int k=0;k<activities.size();k++)
                 {
                     Integer id = activities.get(k).getIdСотрудника();
                     Employees emp = ss.searchEmployeeById(id);
                     employees.add(emp);
                 }
-                return employees;
+                return employees;*/
+                return activities;
             }
         }
         catch(Exception e)
@@ -285,48 +251,37 @@ public class ComplexSearch {
     /**
      * Функция поиска записи в таблице
      * @see Events
-     * по типу мероприятий
+     * по типу мероприятий и зоопарку
      * @see EventType
-     * @return Возвращает список всех мероприятий данного типа
-**/
-    public List<Events> searchEventByType(String type)
-    {
-        try {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
-            EntityManager em = emf.createEntityManager();
-            if (em != null) {
-                EventType result = ss.searchEventTypeByName(type);
-                int id = result.getIdТипаМероприятия();
-                Query query = em.createQuery("SELECT m from Events as m where m.idТипаМероприятия = :paramName");
-                query.setParameter("paramName", id);
-                return query.getResultList();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Функция поиска записи в таблице
-     * @see Events
-     * по зоопарку
+     * и
      * @see Zoo
-     * @return Возвращает список всех мероприятий данного зоопарка
+     * @return Возвращает список подходящих мероприятий
 **/
-    public List<Events> searchEventByZoo( String zoo)
+    public List<Events> searchEvent(Integer typeId, Integer zooId)
     {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("cursUnit");
             EntityManager em = emf.createEntityManager();
             if (em != null) {
-                Zoo result = ss.searchZooByName( zoo);
-                int id = result.getIdЗоопарка();
-
-                Query query = em.createQuery("SELECT m from Events as m where m.idЗоопарка = :paramName");
-                query.setParameter("paramName", id);
+                Query query;
+                if(zooId==0)
+                {
+                    query = em.createQuery
+                            ("SELECT m from Events as m where m.idТипаМероприятия = :type");
+                    query.setParameter("type", typeId);
+                }
+                else if(typeId==0)
+                {
+                    query = em.createQuery
+                            ("SELECT m from Events as m where m.idЗоопарка = :zoo");
+                    query.setParameter("zoo", zooId);
+                }
+                else{
+                    query = em.createQuery
+                            ("SELECT m from Events as m where m.idТипаМероприятия = :type and m.idЗоопарка = :zoo");
+                    query.setParameter("type", typeId);
+                    query.setParameter("zoo", zooId);
+                }
                 return query.getResultList();
             }
         }

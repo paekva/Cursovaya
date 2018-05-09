@@ -2,6 +2,7 @@ package ru.iad.restful.user;
 
 import com.google.gson.Gson;
 import ru.iad.dao.SimpleSearch;
+import ru.iad.dao.Update;
 import ru.iad.entities.*;
 import ru.iad.response.*;
 import ru.iad.supplies.EmailSender;
@@ -19,47 +20,41 @@ public class UserService {
     @EJB
     private SimpleSearch ss;
 
+    @EJB
+    private Update up;
+
     @GET
-    @Path("/tickets/{id}")
-    public Response allUserTickets(@PathParam("id") Integer id){
+    @Produces({"application/xml", "application/json"})
+    @Path("/tickets/{login}")
+    public Response allUserTickets(@PathParam("login") String login){
         Gson gson = new Gson();
         List<ResponseTickets> ResponseTickets = new ArrayList<ResponseTickets>();
 
-        List<Tickets> foundTickets = ss.searchTicketsByUser(id);
+        //User fu = ss.searchUserByName(login);
+        List<Tickets> foundTickets;
+        foundTickets = ss.searchTicketsByUser(4);
+        return Response.status(200)
+                .entity(gson.toJson(foundTickets))
+                .build();
 
-        for (Tickets t: foundTickets) {
+        /*for (Tickets t: foundTickets) {
             Zoo zoo = ss.searchZooById(t.getIdЗоопарка());
             TicketsType tt = ss.searchTicketsTypeById(t.getIdКатегории());
             ResponseTickets rt = new ResponseTickets(
                     zoo.getНазвание(), t.getДатаПокупки(),
                     tt.getНазваниеКатегории());
             ResponseTickets.add(rt);
-        }
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(ResponseTickets))
-                .build();
+        }*/
     }
 
-    @GET
-    @Path("/info/{id}")
-    public Response userInfo(@PathParam("id") Integer id){
-        Gson gson = new Gson();
-        User usr = ss.searchUserById(id);
-        ResponseUser user = new ResponseUser(usr.getId(),usr.getUsername(), usr.getName(),
-                usr.getEmail(),usr.getInfo(),usr.getRole());
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(user))
-                .build();
+    @POST
+    @Path("/info")
+    public Response userInfo(ResponseUser user){
+        User usr = ss.searchUserByName(user.getLogin());
+        if(usr==null) return Response.status(500).build();
+        boolean result = up.userInfoUpdate(user.getLogin(),user.getName(),user.getEmail(),user.getInfo());
+        if(!result) return Response.status(500).build();
+        else return Response.ok().build();
     }
 
     @POST

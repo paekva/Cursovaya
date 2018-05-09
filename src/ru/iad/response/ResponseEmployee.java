@@ -2,12 +2,12 @@ package ru.iad.response;
 
 public class ResponseEmployee
 {
-    private Integer id;
+    private Double years;
     private String name;
     private String profession;
 
-    public ResponseEmployee(Integer id, String name, String profession) {
-        this.id = id;
+    public ResponseEmployee(Double years, String name, String profession) {
+        this.years = years;
         this.name = name;
         this.profession = profession;
     }

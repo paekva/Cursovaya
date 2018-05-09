@@ -21,11 +21,11 @@ public class MentionsSearchRequest {
     @EJB
     private ComplexSearch cs;
 
-    @POST
-    @Path("byZoo")
+    @GET
+    @Path("{zoo}/{type}")
     @Produces({"application/xml","application/json"})
-    public Response findMentionsByZoo(@FormParam("zoo") String zoo){
-        List<Mentions> mentionsList = cs.searchMentionsByZoo(zoo);
+    public Response findMentions(@PathParam("zoo") Integer zoo,@PathParam("type") Integer type){
+        List<Mentions> mentionsList = cs.searchMention(zoo,type);
         List<MentionHelp> re=new ArrayList<>();
         for(Mentions m: mentionsList)
         {
@@ -38,85 +38,6 @@ public class MentionsSearchRequest {
         }
         Gson gson = new Gson();
         return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(re))
-                .build();
-    }
-
-    @POST
-    @Path("byName")
-    @Produces({"application/xml","application/json"})
-    public Response findMentionByName(@FormParam("name") String name){
-        Mentions mention = ss.searchMentionByName(name);
-        MentionType mt = ss.searchMentionTypeById(mention.getIdВидаУпоминания());
-        MentionHelp mentionHelp = new MentionHelp(
-                    mention.getНазваниеУпоминания(),mt.getНазваниеВидаУпоминания(),
-                    mention.getIdУпоминания()
-        );
-        Gson gson = new Gson();
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(mentionHelp))
-                .build();
-    }
-
-
-    @POST
-    @Path("byType")
-    @Produces({"application/xml","application/json"})
-    public Response findMentionsByType(@FormParam("type") String type){
-        List<Mentions> mentionsList = cs.searchMentionsByType(type);
-        List<MentionHelp> re=new ArrayList<>();
-        for(Mentions m: mentionsList)
-        {
-            MentionHelp eh = new MentionHelp(
-                    m.getНазваниеУпоминания(),type,
-                    m.getIdУпоминания()
-            );
-            re.add(eh);
-        }
-        Gson gson = new Gson();
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(re))
-                .build();
-
-    }
-
-
-    @POST
-    @Path("byDate")
-    @Produces({"application/xml","application/json"})
-    public Response findMentionsByDate(@FormParam("date") Date date, @FormParam("before") Boolean before){
-        List<Mentions> mentions = cs.searchMentionsByDate(date,before);
-        List<MentionHelp> re=new ArrayList<>();
-        for(Mentions m: mentions)
-        {
-            Zoo zoo = ss.searchZooById(m.getIdЗоопарка());
-            MentionHelp eh = new MentionHelp(
-                    m.getНазваниеУпоминания(),zoo.getНазвание(),m.getIdУпоминания()
-            );
-            re.add(eh);
-        }
-        Gson gson = new Gson();
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
                 .entity(gson.toJson(re))
                 .build();
     }
@@ -136,11 +57,6 @@ public class MentionsSearchRequest {
                 mention.getДатаПубликации(), animal.getИмя(), zoo.getНазвание(), emp.getФио()
         );
         return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
                 .entity(gson.toJson(rm))
                 .build();
     }

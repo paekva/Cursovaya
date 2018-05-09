@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="ru.iad.entities.ФлораEntity">
+        <table name="Флора" schema="s225138" catalog="studs"/>
+        <attributes>
+            <id name="idВидаРастения">
+                <column name="id_вида_растения" precision="-1"/>
+            </id>
+            <basic name="названиеВида">
+                <column name="Название_вида" length="50"/>
+            </basic>
+            <basic name="особенностиВида">
+                <column name="Особенности_вида" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

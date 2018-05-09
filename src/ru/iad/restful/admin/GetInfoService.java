@@ -17,30 +17,7 @@ public class GetInfoService {
     @EJB
     private SimpleSearch simpleSearch;
 
-    @GET
-    @Path("/tickets")
-    @Produces({"application/xml", "application/json"})
-    public Response allTickets() {
-        Gson gson = new Gson();
-        List<ResponseTickets> responseTickets = new ArrayList<>();
-        List<Tickets> ticketsList = simpleSearch.searchAllTickets();
 
-        /*for (Tickets t:ticketsList) {
-            Zoo zoo = simpleSearch.searchZooById(t.getIdЗоопарка());
-            TicketsType tt = simpleSearch.searchTicketsTypeById(t.getIdКатегории());
-            ResponseTickets ticket = new ResponseTickets(zoo.getНазвание(),t.getДатаПокупки(),tt.getНазваниеКатегории());
-            responseTickets.add(ticket);
-        }*/
-
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(ticketsList))
-                .build();
-    }
 
     @GET
     @Path("/employees/{name}")
@@ -50,13 +27,8 @@ public class GetInfoService {
         Employees employees = simpleSearch.searchEmployeeByName(name);
         if(employees!=null)
         {
-            ResponseEmployee re = new ResponseEmployee(employees.getIdСотрудника(),employees.getФио(),employees.getПрофессия());
+            ResponseEmployee re = new ResponseEmployee(employees.getСтажРаботы(),employees.getФио(),employees.getПрофессия());
             return Response.status(200)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                    .header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                    .header("Access-Control-Max-Age", "1209600")
                     .entity(gson.toJson(re))
                     .build();
         }

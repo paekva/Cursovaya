@@ -23,77 +23,27 @@ public class EventsSearchRequests {
     @EJB
     ComplexSearch cs;
 
-    @POST
-    @Path("byZoo")
+    @GET
+    @Path("{zoo}/{type}")
     @Produces({"application/xml","application/json"})
-    public Response findEventsByZoo(@FormParam("zoo") String zoo){
-        List<Events> eventsList = cs.searchEventByZoo(zoo);
+    public Response findEvents(@PathParam("zoo") Integer zoo, @PathParam("type") Integer type){
+        List<Events> events = cs.searchEvent(type,zoo);
         List<EventHelp> re=new ArrayList<>();
-        for(Events e: eventsList)
+        if(events!=null)
         {
-            EventHelp eh = new EventHelp(
-                    e.getНазвание(),zoo,e.getIdМероприятия()
-            );
-            re.add(eh);
+            for(Events e: events)
+            {
+                EventType et = ss.searchEventTypeById(e.getIdТипаМероприятия());
+                EventHelp eh = new EventHelp(
+                        e.getНазвание(),et.getНазваниеТипаМероприятия(),e.getIdМероприятия()
+                );
+                re.add(eh);
+            }
         }
+        else re.add(new EventHelp("","",0));
+
         Gson gson = new Gson();
         return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(re))
-                .build();
-    }
-
-    @POST
-    @Path("byName")
-    @Produces({"application/xml","application/json"})
-    public Response findEventsByName(@FormParam("name") String name){
-        Gson gson = new Gson();
-        List<EventHelp> re = new ArrayList<>();
-        List<Events> events = ss.searchEventByName(name);
-        for(Events e:events)
-        {
-            Zoo zoo = ss.searchZooById(e.getIdЗоопарка());
-            EventHelp eh = new EventHelp(
-                    e.getНазвание(),zoo.getНазвание(),e.getIdМероприятия()
-            );
-            re.add(eh);
-        }
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(gson.toJson(re))
-                .build();
-    }
-
-
-    @POST
-    @Path("byType")
-    @Produces({"application/xml","application/json"})
-    public Response findEventsByType(@FormParam("type") String type){
-        Gson gson = new Gson();
-        List<EventHelp> re = new ArrayList<>();
-        List<Events> eventsList = cs.searchEventByType(type);
-        for(Events e:eventsList)
-        {
-            Zoo zoo = ss.searchZooById(e.getIdЗоопарка());
-            EventHelp eh = new EventHelp(
-                    e.getНазвание(),zoo.getНазвание(),e.getIdМероприятия()
-            );
-            re.add(eh);
-        }
-        return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
                 .entity(gson.toJson(re))
                 .build();
     }
@@ -113,11 +63,6 @@ public class EventsSearchRequests {
                 event.getСтоимостьБилетов(),zoo.getНазвание(), emp.getФио()
         );
         return Response.status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
                 .entity(gson.toJson(ra))
                 .build();
     }
@@ -126,12 +71,12 @@ public class EventsSearchRequests {
 class EventHelp
 {
     private String name;
-    private String zoo;
+    private String type;
     private Integer id;
 
-    public EventHelp(String name, String zoo, Integer id) {
+    public EventHelp(String name, String type, Integer id) {
         this.name = name;
-        this.zoo = zoo;
+        this.type = type;
         this.id = id;
     }
 }

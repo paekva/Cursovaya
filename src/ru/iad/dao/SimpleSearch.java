@@ -406,7 +406,7 @@ public class SimpleSearch {
 
     /**
      * Функция поиска записи в таблице
-     * @see TicketsType
+     * @see Tickets
      * по дате
      * @return Возвращает список всех билетов, купленных данным пользователем
      */
